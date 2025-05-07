@@ -33,4 +33,7 @@ opt.clipboard:append("unnamedplus")
 opt.splitright = true
 opt.splitbelow = true
 
-vim.opt.sessionoptions:append("localoptions")
+opt.sessionoptions:append("localoptions")
+
+opt.undofile = true
+opt.undodir = vim.fn.stdpath("state") .. "/undo"
