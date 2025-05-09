@@ -10,11 +10,11 @@ return {
     vim.g.loaded_netrwPlugin = 1
 
     -- Open and focus the current file on startup
-    vim.api.nvim_create_autocmd({ "VimEnter" }, {
-      callback = function()
-        require("nvim-tree.api").tree.open({ focus = false })
-      end,
-    })
+    -- vim.api.nvim_create_autocmd({ "VimEnter" }, {
+    -- callback = function()
+    -- require("nvim-tree.api").tree.open({ focus = false })
+    -- end,
+    -- })
 
     nvimtree.setup({
       update_focused_file = {
