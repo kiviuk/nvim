@@ -49,6 +49,7 @@ return {
     end,
     config = function(metals, metals_config)
       vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "scala", "sbt", "java" }, -- Only these filetypes!
         callback = function()
           require("metals").initialize_or_attach(metals_config)
         end,
