@@ -40,3 +40,6 @@ vim.keymap.set("n", "<leader>qs", function()
   -- 2. Save all buffers and quit
   vim.cmd("xa") -- Equivalent to :wqa (write all changed buffers and quit)
 end, { desc = "Save session + all files and quit" })
+
+-- <leader>ä
+vim.keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })
