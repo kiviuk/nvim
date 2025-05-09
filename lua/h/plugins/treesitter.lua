@@ -28,6 +28,7 @@ return {
         "tsx",
         "yaml",
         "html",
+        "xml",
         "css",
         "prisma",
         "markdown",
@@ -44,7 +45,7 @@ return {
         "c",
         "java",
         "scala",
-        "rust"
+        "rust",
       },
       incremental_selection = {
         enable = true,
