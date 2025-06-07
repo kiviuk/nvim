@@ -1,5 +1,8 @@
 return {
   "nvim-telescope/telescope.nvim",
+  -- LAZY-LOADING TRIGGERS: Load on command or keymap
+  cmd = "Telescope",
+  keys = { "<leader>f" },
   branch = "0.1.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
