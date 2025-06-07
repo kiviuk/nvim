@@ -1,3 +1,4 @@
+-- File: lua/h/plugins/treesitter.lua (MODIFIED)
 return {
   "nvim-treesitter/nvim-treesitter",
   event = { "BufReadPre", "BufNewFile" },
@@ -6,21 +7,10 @@ return {
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    -- import nvim-treesitter plugin
     local treesitter = require("nvim-treesitter.configs")
 
-    -- configure treesitter
-    treesitter.setup({ -- enable syntax highlighting
-      highlight = {
-        enable = true,
-      },
-      -- enable indentation
-      indent = { enable = true },
-      -- enable autotagging (w/ nvim-ts-autotag plugin)
-      autotag = {
-        enable = true,
-      },
-      -- ensure these language parsers are installed
+    treesitter.setup({
+      -- A list of parser names, or "all"
       ensure_installed = {
         "json",
         "javascript",
@@ -47,6 +37,36 @@ return {
         "scala",
         "rust",
       },
+
+      -- Install parsers synchronously (only applied to `ensure_installed`)
+      sync_install = false,
+
+      -- Automatically install missing parsers when entering buffer
+      -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+      auto_install = true,
+
+      -- === THE FIX FOR LARGE FILES IS HERE ===
+      highlight = {
+        enable = true,
+        -- Set this to false if you want to use TSEnable highlight manually
+        -- on large files.
+        disable = function(lang, buf)
+          local max_filesize = 1024 * 1024 -- 1 MB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+            return true
+          end
+        end,
+
+        -- Or, if you REALLY want to parse large files, do this instead:
+        -- disable = false,
+        -- additional_vim_regex_highlighting = false,
+      },
+      -- =======================================
+
+      indent = { enable = true },
+      autotag = { enable = true },
+
       incremental_selection = {
         enable = true,
         keymaps = {
