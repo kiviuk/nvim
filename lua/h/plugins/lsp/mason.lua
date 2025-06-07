@@ -20,7 +20,7 @@ return {
   -- This should load when you actually open files that need LSPs.
   {
     "williamboman/mason-lspconfig.nvim",
-    event = { "BufReadPre", "BufNewFile" }, -- Trigger when opening a file
+    event = "VeryLazy",
     dependencies = {
       "williamboman/mason.nvim", -- Needs mason to know what's installed
       "neovim/nvim-lspconfig", -- It will configure servers for nvim-lspconfig
@@ -69,7 +69,7 @@ return {
   -- This also loads when you open files.
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "VeryLazy",
     config = function()
       -- Global LSP settings, keymaps, and diagnostic configurations go here.
       -- This function runs when nvim-lspconfig is loaded.
@@ -115,12 +115,7 @@ return {
   -- Mason Tool Installer: For formatters, linters etc.
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    -- When to run?
-    -- Option 1: When Mason is loaded (if you often manage tools via Mason UI)
-    -- cmd = "Mason",
-    -- Option 2: More passively in the background after startup
     event = "VeryLazy",
-    -- Option 3: Or trigger its own command if it provides one e.g. cmd = "MasonToolsUpdate"
     dependencies = { "williamboman/mason.nvim" },
     opts = {
       ensure_installed = {

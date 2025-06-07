@@ -11,12 +11,31 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({ { import = "h.plugins" }, { import = "h.plugins.lsp" } }, { 
+require("lazy").setup({ { import = "h.plugins" }, { import = "h.plugins.lsp" } }, {
   checker = {
     enabled = true,
     notify = false,
   },
   change_detection = {
     notify = false,
+  },
+  performance = {
+    rtp = {
+      -- These are standard plugins you can disable for performance.
+      disabled_plugins = {
+        "gzip",
+        "tar",
+        "tarPlugin",
+        "zip",
+        "zipPlugin",
+        "netrw",
+        "netrwPlugin",
+        "netrwSettings",
+        "netrwFileHandlers",
+        -- Disable the slow, built-in XML ftdetect script
+        -- slow, legacy XML filetype detection
+        "xml",
+      },
+    },
   },
 })

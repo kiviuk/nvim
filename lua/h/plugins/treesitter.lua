@@ -1,7 +1,7 @@
 -- File: lua/h/plugins/treesitter.lua (MODIFIED)
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPre", "BufNewFile" },
+  event = "VeryLazy",
   build = ":TSUpdate",
   dependencies = {
     "windwp/nvim-ts-autotag",
