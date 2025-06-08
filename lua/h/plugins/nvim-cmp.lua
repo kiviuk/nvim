@@ -10,6 +10,11 @@ return {
       version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
       -- install jsregexp (optional!).
       build = "make install_jsregexp",
+      event = "InsertEnter", -- Or try "VeryLazy" to see if cmp handles it
+      config = function()
+        local luasnip = require("luasnip")
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end,
     },
     "saadparwaiz1/cmp_luasnip", -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
@@ -21,9 +26,6 @@ return {
     local luasnip = require("luasnip")
 
     local lspkind = require("lspkind")
-
-    -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-    require("luasnip.loaders.from_vscode").lazy_load()
 
     cmp.setup({
       completion = {
