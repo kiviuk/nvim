@@ -31,6 +31,7 @@ return {
       mason_lspconfig.setup({
         ensure_installed = {
           "lua_ls",
+          "pyright",
           -- Add other LSPs you always want installed here
           -- e.g., "pyright", "tsserver", "gopls", "rust_analyzer"
         },
@@ -58,6 +59,30 @@ return {
               },
             })
           end,
+
+          -- CUSTOM HANDLER FOR PYRIGHT
+          ["pyright"] = function()
+            require("lspconfig").pyright.setup({
+              capabilities = require("cmp_nvim_lsp").default_capabilities(),
+              -- IMPORTANT: Pyright's settings for virtual environments
+              settings = {
+                python = {
+                  analysis = {
+                    -- This is the most crucial part for telling Pyright where to find your Python interpreter.
+                    -- It will respect the VIRTUAL_ENV environment variable, but you can also be explicit.
+                    -- `autoSearchPaths = true` is generally good for Pyright to find standard locations.
+                    autoSearchPaths = true,
+                    useLibraryCodeForTypes = true,
+                    indexing = true,
+                    -- `extraPaths` can be useful if you have specific modules not in your standard PYTHONPATH
+                    -- that are relative to your project root. E.g., if your source is in `src/`
+                    -- extraPaths = { "src" },
+                  },
+                },
+              },
+            })
+          end,
+
           -- Add more custom handlers for other LSPs if they need special setup
           -- e.g. ["pyright"] = function() require("lspconfig").pyright.setup({...}) end
         },
@@ -81,6 +106,8 @@ return {
         callback = function(ev)
           -- Enable completion triggered by <c-x><c-o>
           vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+          vim.lsp.set_log_level("debug")
 
           -- Buffer local mappings.
           local opts = { buffer = ev.buf, noremap = true, silent = true }

@@ -1,12 +1,4 @@
-# nvim-surround Cheatsheet
-
-## nvim-surround @surround @sur
-
-Add surround to inner word ( e.g., `ysiw"` adds double quotes around word ) | ysiw 
-Add surround to entire line ( e.g., `yss(` surrounds line with parentheses ) | yss
-Delete surrounding ( e.g., `ds"` removes double quotes ) | ds
-Change surrounding ( e.g., `cs"'` changes double quotes to single ) | cs
-Add surround to selection ( e.g. `S{` )  | S (visual mode)
+# nvim Cheatsheet
 
 ## substitute.nvim @substitute @sub
 
@@ -25,3 +17,14 @@ Open terminal in full buffer | <leader>t
 Open terminal in vertical split | <leader>tv
 Open terminal in horizontal split | <leader>th
 Close terminal | <leader>tc
+
+
+## mini.surround @mini @surround @gs
+
+Add surround to motion/selection | gsa{motion}
+Add surround to visual selection | gsa (visual mode)
+Delete surround | gsd{char}
+Replace surround | gsr{old}{new}
+Find next surround | gsf{char}
+Find previous surround | gsF{char}
+Replace next surround | gsrn{old}{new}
