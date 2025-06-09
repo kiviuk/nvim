@@ -21,17 +21,31 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" })
 
-vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
+-- Save file
+keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 
--- Add this to your existing config (inside the nvim-tree setup or keymaps section)
-vim.keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
-vim.keymap.set("n", "<C-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
+-- Navigate between tree explorer and editor
+keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
+keymap.set("n", "<C-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
+
+-- Open a new terminal in a full window/buffer
+keymap.set("n", "<leader>t", "<cmd>terminal<CR>", { desc = "Open terminal" })
+
+-- Open a new terminal in a vertical split
+keymap.set("n", "<leader>tv", "<cmd>vsplit | terminal<CR>", { desc = "Open terminal (vertical split)" })
+
+-- Open a new terminal in a horizontal split
+keymap.set("n", "<leader>th", "<cmd>split | terminal<CR>", { desc = "Open terminal (horizontal split)" })
+
+-- Quickly close a terminal window if it's not the last one
+-- (Note: <leader>sx already closes current split, which works for terminals too)
+keymap.set("n", "<leader>tc", "<cmd>close<CR>", { desc = "Close terminal split" })
 
 -- Close Neovim (force quit)
-vim.keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Force quit all" })
+keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Force quit all" })
 
 -- Save all and quit
-vim.keymap.set("n", "<leader>qs", function()
+keymap.set("n", "<leader>qs", function()
   -- 1. Save the session first (if available)
   local success, _ = pcall(function()
     vim.cmd("SessionSave")
@@ -42,7 +56,7 @@ vim.keymap.set("n", "<leader>qs", function()
 end, { desc = "Save session + all files and quit" })
 
 -- <leader>ä
-vim.keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })
+keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })
 
 -- Save / recall last cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {

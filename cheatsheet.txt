@@ -1,0 +1,27 @@
+# nvim-surround Cheatsheet
+
+## nvim-surround @surround @sur
+
+Add surround to inner word ( e.g., `ysiw"` adds double quotes around word ) | ysiw 
+Add surround to entire line ( e.g., `yss(` surrounds line with parentheses ) | yss
+Delete surrounding ( e.g., `ds"` removes double quotes ) | ds
+Change surrounding ( e.g., `cs"'` changes double quotes to single ) | cs
+Add surround to selection ( e.g. `S{` )  | S (visual mode)
+
+## substitute.nvim @substitute @sub
+
+Substitute text with motion ( e.g. `se` substitutes until end of word) | s{motion}
+Substitute current line | ss
+Substitute from cursor to end of line | S
+Substitute visual selection | s (visual mode)
+Exchange text with motion | sx{motion}
+Exchange current line | sxx
+Exchange visual selection | X (visual mode)
+Cancel exchange operation | sxc
+
+## Terminal @terminal @neovim
+
+Open terminal in full buffer | <leader>t
+Open terminal in vertical split | <leader>tv
+Open terminal in horizontal split | <leader>th
+Close terminal | <leader>tc
