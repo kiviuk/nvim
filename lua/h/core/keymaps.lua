@@ -24,8 +24,8 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 vim.keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 
 -- Add this to your existing config (inside the nvim-tree setup or keymaps section)
-vim.keymap.set("n", "<M-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
-vim.keymap.set("n", "<M-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
+vim.keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
+vim.keymap.set("n", "<C-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
 
 -- Close Neovim (force quit)
 vim.keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Force quit all" })

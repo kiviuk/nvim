@@ -6,7 +6,6 @@ return {
     { "<leader>ef", "<cmd>NvimTreeFindFile<CR>", desc = "Find file in explorer" },
     { "<leader>ec", "<cmd>NvimTreeCollapse<CR>", desc = "Collapse file explorer" },
     { "<leader>er", "<cmd>NvimTreeRefresh<CR>", desc = "Refresh file explorer" },
-    { "<M-Left>", "<cmd>NvimTreeFocus<CR>", desc = "Focus Explorer" },
   },
   dependencies = "nvim-tree/nvim-web-devicons",
   config = function()
