@@ -4,22 +4,28 @@ return {
   config = function()
     local substitute = require("substitute")
     local exchange = require("substitute.exchange")
-
     substitute.setup()
 
-    -- set keymaps
-    local keymap = vim.keymap
+    -- Only set keymaps in normal, modifiable buffers
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "*",
+      callback = function()
+        if vim.bo.buftype == "" and vim.bo.modifiable then
+          local keymap = vim.keymap
 
-    -- Substitute mappings
-    keymap.set("n", "s", substitute.operator, { desc = "Substitute with motion" })
-    keymap.set("n", "ss", substitute.line, { desc = "Substitute line" })
-    keymap.set("n", "S", substitute.eol, { desc = "Substitute to end of line" })
-    keymap.set("x", "s", substitute.visual, { desc = "Substitute in visual mode" })
+          -- Substitute mappings
+          keymap.set("n", "s", substitute.operator, { desc = "Substitute with motion", buffer = true })
+          keymap.set("n", "ss", substitute.line, { desc = "Substitute line", buffer = true })
+          keymap.set("n", "S", substitute.eol, { desc = "Substitute to end of line", buffer = true })
+          keymap.set("x", "s", substitute.visual, { desc = "Substitute in visual mode", buffer = true })
 
-    -- Exchange mappings
-    keymap.set("n", "sx", exchange.operator, { desc = "Exchange text with motion" })
-    keymap.set("n", "sxx", exchange.line, { desc = "Exchange current line" })
-    keymap.set("x", "X", exchange.visual, { desc = "Exchange visual selection" })
-    keymap.set("n", "sxc", exchange.cancel, { desc = "Cancel exchange operation" })
+          -- Exchange mappings
+          keymap.set("n", "sx", exchange.operator, { desc = "Exchange with motion", buffer = true })
+          keymap.set("n", "sxx", exchange.line, { desc = "Exchange line", buffer = true })
+          keymap.set("x", "X", exchange.visual, { desc = "Exchange visual", buffer = true })
+          keymap.set("n", "sxc", exchange.cancel, { desc = "Cancel exchange", buffer = true })
+        end
+      end,
+    })
   end,
 }

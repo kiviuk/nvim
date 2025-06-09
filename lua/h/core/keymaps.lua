@@ -28,14 +28,59 @@ keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save
 keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
 keymap.set("n", "<C-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
 
--- Open a new terminal in a full window/buffer
-keymap.set("n", "<leader>t", "<cmd>terminal<CR>", { desc = "Open terminal" })
+-- New Terminal
+keymap.set("n", "<leader>t", function()
+  vim.cmd("tabnew")
+  vim.cmd("terminal")
+  vim.cmd("startinsert")
+end, { desc = "Open terminal in full window/buffer (insert mode)" })
 
--- Open a new terminal in a vertical split
-keymap.set("n", "<leader>tv", "<cmd>vsplit | terminal<CR>", { desc = "Open terminal (vertical split)" })
+-- Horizontal Terminal
+keymap.set("n", "<leader>tv", function()
+  vim.cmd("vsplit")
+  vim.cmd("terminal")
+  vim.cmd("startinsert")
+end, { desc = "Open terminal in horizontal split (insert mode)" })
 
--- Open a new terminal in a horizontal split
-keymap.set("n", "<leader>th", "<cmd>split | terminal<CR>", { desc = "Open terminal (horizontal split)" })
+-- Vertical Terminal
+keymap.set("n", "<leader>th", function()
+  vim.cmd("split")
+  vim.cmd("terminal")
+  vim.cmd("startinsert")
+end, { desc = "Open terminal in vertical split (insert mode)" })
+
+-- To switch to adjacent windows (e.g., editor pane next to terminal split)
+-- Assuming common layout: [Editor | Terminal]
+vim.api.nvim_set_keymap(
+  "t",
+  "<C-h>",
+  [[<C-\><C-n><C-w>h]],
+  { noremap = true, silent = true, desc = "Switch to left window from terminal" }
+)
+vim.api.nvim_set_keymap(
+  "t",
+  "<C-l>",
+  [[<C-\><C-n><C-w>l]],
+  { noremap = true, silent = true, desc = "Switch to right window from terminal" }
+)
+
+-- To switch between tabs (e.g., if terminal is in its own tab)
+vim.api.nvim_set_keymap(
+  "t",
+  "<C-Left>",
+  [[<C-\><C-n>:tabprevious<CR>]],
+  { noremap = true, silent = true, desc = "Switch to previous tab from terminal" }
+)
+vim.api.nvim_set_keymap(
+  "t",
+  "<C-Right>",
+  [[<C-\><C-n>:tabnext<CR>]],
+  { noremap = true, silent = true, desc = "Switch to next tab from terminal" }
+)
+
+-- Map <Esc><Esc> to exit terminal mode *and* close the window
+-- vim.api.nvim_set_keymap("t", "<Esc><Esc>", [[<C-\><C-n>:close<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap("t", "<Esc><Esc>", [[<C-\><C-n>gt]], { noremap = true, silent = true })
 
 -- Quickly close a terminal window if it's not the last one
 -- (Note: <leader>sx already closes current split, which works for terminals too)
@@ -44,12 +89,30 @@ keymap.set("n", "<leader>tc", "<cmd>close<CR>", { desc = "Close terminal split" 
 -- Close Neovim (force quit)
 keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Force quit all" })
 
+-- keymap.set({ "n", "x" }, "<S-Up>", "gk", { desc = "Move/Extend selection up" })
+-- keymap.set({ "n", "x" }, "<S-Down>", "gj", { desc = "Move/Extend selection down" })
+
+-- In Normal mode: Pressing Shift+Arrow enters Visual Line mode and selects the current line.
+keymap.set("n", "<S-Up>", "V", { desc = "Start visual line selection (Up)" })
+keymap.set("n", "<S-Down>", "V", { desc = "Start visual line selection (Down)" })
+
+-- In Visual mode: Pressing Shift+Arrow just moves the cursor, extending the selection.
+keymap.set("x", "<S-Up>", "k", { desc = "Extend visual selection up" })
+keymap.set("x", "<S-Down>", "j", { desc = "Extend visual selection down" })
+
 -- Save all and quit
 keymap.set("n", "<leader>qs", function()
   -- 1. Save the session first (if available)
   local success, _ = pcall(function()
     vim.cmd("SessionSave")
   end)
+
+  -- Kill all terminal buffers cleanly
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[bufnr].buftype == "terminal" then
+      vim.api.nvim_buf_delete(bufnr, { force = true })
+    end
+  end
 
   -- 2. Save all buffers and quit
   vim.cmd("xa") -- Equivalent to :wqa (write all changed buffers and quit)
