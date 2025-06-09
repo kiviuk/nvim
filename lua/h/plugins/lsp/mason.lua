@@ -79,6 +79,7 @@ return {
                     -- extraPaths = { "src" },
                   },
                 },
+                positionEncoding = "utf-8",
               },
             })
           end,
@@ -107,7 +108,7 @@ return {
           -- Enable completion triggered by <c-x><c-o>
           vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
-          vim.lsp.set_log_level("debug")
+          -- vim.lsp.set_log_level("debug")
 
           -- Buffer local mappings.
           local opts = { buffer = ev.buf, noremap = true, silent = true }

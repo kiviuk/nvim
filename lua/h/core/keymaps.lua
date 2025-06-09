@@ -118,6 +118,22 @@ keymap.set("n", "<leader>qs", function()
   vim.cmd("xa") -- Equivalent to :wqa (write all changed buffers and quit)
 end, { desc = "Save session + all files and quit" })
 
+-- Mark current file
+keymap.set("n", "<leader>ha", function()
+  require("harpoon.mark").add_file()
+end, { desc = "Harpoon current file" })
+-- Toggle Harpoon menu
+keymap.set("n", "<leader>hm", function()
+  require("harpoon.ui").toggle_quick_menu()
+end, { desc = "Toggle Harpoon menu" })
+-- Navigate to marked files
+keymap.set("n", "<leader>hn", function()
+  require("harpoon.ui").nav_next()
+end, { desc = "Harpoon to next file" })
+keymap.set("n", "<leader>hy", function()
+  require("harpoon.ui").nav_prev()
+end, { desc = "Harpoon to previous file" })
+
 -- <leader>ä
 keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })
 
