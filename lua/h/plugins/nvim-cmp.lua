@@ -1,6 +1,6 @@
 return {
   "hrsh7th/nvim-cmp",
-  event = "InsertEnter",
+  event = "VeryLazy",
   dependencies = {
     "hrsh7th/cmp-buffer", -- source for text in buffer
     "hrsh7th/cmp-path", -- source for file system paths
@@ -10,7 +10,7 @@ return {
       version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
       -- install jsregexp (optional!).
       build = "make install_jsregexp",
-      event = "InsertEnter", -- Or try "VeryLazy" to see if cmp handles it
+      event = "VeryLazy", -- Or try "VeryLazy" to see if cmp handles it
       config = function()
         local luasnip = require("luasnip")
         require("luasnip.loaders.from_vscode").lazy_load()

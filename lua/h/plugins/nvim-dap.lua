@@ -1,5 +1,6 @@
 return {
   "mfussenegger/nvim-dap",
+  event = { "VeryLazy" },
   -- LAZY-LOADING TRIGGERS: Load on command, keymap, or when a dependency needs it.
   cmd = {
     "DapContinue",

@@ -1,9 +1,9 @@
 return {
   "nvim-telescope/telescope.nvim",
-  -- LAZY-LOADING TRIGGERS: Load on command or keymap
+  event = { "VeryLazy" },
   cmd = "Telescope",
   keys = { "<leader>f" },
-  branch = "0.1.x",
+  -- branch = "0.1.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -27,7 +27,20 @@ return {
       },
     })
 
-    telescope.load_extension("fzf")
+    -- telescope.load_extension("fzf")
+
+    -- Lazy-load fzf extension when first needed
+    local function load_fzf_extension()
+      telescope.load_extension("fzf")
+    end
+
+    -- Override Telescope commands to load fzf on first use
+    local telescope_cmd = vim.api.nvim_create_augroup("TelescopeLoadFzf", { clear = true })
+    vim.api.nvim_create_autocmd("CmdlineEnter", {
+      pattern = "Telescope",
+      group = telescope_cmd,
+      callback = load_fzf_extension,
+    })
 
     -- set keymaps
     local keymap = vim.keymap -- for conciseness

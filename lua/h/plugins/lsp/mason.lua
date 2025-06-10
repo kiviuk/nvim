@@ -65,6 +65,9 @@ return {
             require("lspconfig").pyright.setup({
               capabilities = require("cmp_nvim_lsp").default_capabilities(),
               -- IMPORTANT: Pyright's settings for virtual environments
+              root_dir = function(fname)
+                return vim.fs.normalize(vim.env.HOME .. "/Projects/FieldData-Cloudification")
+              end,
               settings = {
                 python = {
                   analysis = {
@@ -74,13 +77,34 @@ return {
                     autoSearchPaths = true,
                     useLibraryCodeForTypes = true,
                     indexing = true,
+                    pythonPath = vim.env.VIRTUAL_ENV .. "/bin/python",
                     -- `extraPaths` can be useful if you have specific modules not in your standard PYTHONPATH
                     -- that are relative to your project root. E.g., if your source is in `src/`
                     -- extraPaths = { "src" },
+                    extraPaths = {
+                      "./lib",
+                      "./gigalix",
+                      vim.fs.dirname(vim.env.VIRTUAL_ENV) .. "/gigalix/stg__strahler/processing",
+                      vim.fs.dirname(vim.env.VIRTUAL_ENV) .. "/gigalix",
+                    },
                   },
                 },
-                positionEncoding = "utf-8",
               },
+              positionEncoding = "utf-8",
+            })
+          end,
+          ["ruff"] = function()
+            require("lspconfig").ruff.setup({
+              capabilities = require("cmp_nvim_lsp").default_capabilities(),
+              -- FORCE THE ROOT DIRECTORY FOR RUFF as well
+              root_dir = function(fname)
+                return vim.fs.normalize(vim.env.HOME .. "/Projects/FieldData-Cloudification")
+              end,
+              settings = {
+                -- Ruff usually inherits from pyproject.toml, but if it needs explicit paths, add here
+              },
+              -- You might also need positionEncoding for Ruff if it reports warnings
+              positionEncoding = "utf-8",
             })
           end,
 
