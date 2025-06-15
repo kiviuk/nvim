@@ -8,6 +8,8 @@ return {
           "basedpyright", -- Python LSP server
           "ruff", -- Ruff linter/formatter (and its LSP server)
           "stylua", -- Lua formatter
+          "rust-analyzer",
+          "rustfmt",
           -- Only tools explicitly needed for your chosen languages.
         },
       })
@@ -44,6 +46,16 @@ return {
               workspace = { checkThirdParty = false },
               telemetry = { enable = false },
               completion = { callSnippet = "Replace" },
+            },
+          },
+        },
+        rust_analyzer = {
+          root_dir = util.root_pattern("Cargo.toml", ".git"),
+          settings = {
+            ["rust-analyser"] = {
+              checkOnSave = {
+                command = "clippy",
+              },
             },
           },
         },
@@ -123,6 +135,7 @@ return {
         python = { "ruff_format" }, -- Use ruff_format for Python formatting
         lua = { "stylua" }, -- Use stylua for Lua formatting
         yaml = { "prettier" },
+        rust = { "rustfmt" },
       },
       format_on_save = {
         lsp_format = false, -- IMPORTANT: Prevent conflicts with LSP servers also offering formatting
