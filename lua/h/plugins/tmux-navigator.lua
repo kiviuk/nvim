@@ -1,5 +1,5 @@
 return {
   "christoomey/vim-tmux-navigator",
   event = "VeryLazy",
-  enabled = false,
+  enabled = true,
 }

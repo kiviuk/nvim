@@ -3,7 +3,7 @@ vim.g.mapleader = " "
 local keymap = vim.keymap
 
 keymap.set("i", "jk", "<ESC>", { desc = "Exit i mode with jk" })
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<leader>.", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- inc/dec numbers
 keymap.set("n", "<leader>=", "<C-a>", { desc = "Inc numb" })
@@ -100,6 +100,12 @@ keymap.set("n", "<S-Down>", "V", { desc = "Start visual line selection (Down)" }
 keymap.set("x", "<S-Up>", "k", { desc = "Extend visual selection up" })
 keymap.set("x", "<S-Down>", "j", { desc = "Extend visual selection down" })
 
+-- TMUX
+keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { desc = "window left" })
+keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", { desc = "window right" })
+keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { desc = "window down" })
+keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { desc = "window up" })
+
 -- Save all and quit
 keymap.set("n", "<leader>qs", function()
   -- 1. Save the session first (if available)
@@ -133,6 +139,10 @@ end, { desc = "Harpoon to next file" })
 keymap.set("n", "<leader>hy", function()
   require("harpoon.ui").nav_prev()
 end, { desc = "Harpoon to previous file" })
+
+keymap.set("n", "gd", function()
+  vim.lsp.buf.definition({ reuse_win = true })
+end, { desc = "Go to definition (LSP)" })
 
 -- <leader>ä
 keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })
