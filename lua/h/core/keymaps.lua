@@ -141,8 +141,12 @@ keymap.set("n", "<leader>hy", function()
 end, { desc = "Harpoon to previous file" })
 
 keymap.set("n", "gd", function()
-  vim.lsp.buf.definition({ reuse_win = true })
-end, { desc = "Go to definition (LSP)" })
+  require("telescope.builtin").lsp_definitions()
+end, { noremap = true, silent = true, desc = "Go to definition (LSP)" })
+
+keymap.set("n", "<leader>u", function()
+  require("telescope.builtin").lsp_references()
+end, { noremap = true, silent = true, desc = "Find all references (LSP)" })
 
 -- <leader>ä
 keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })

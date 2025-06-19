@@ -18,7 +18,6 @@ Open terminal in vertical split | <leader>tv
 Open terminal in horizontal split | <leader>th
 Close terminal | <leader>tc
 
-
 ## mini.surround @mini @surround @gs
 
 Add surround to motion/selection (gsaiw") | gsa{motion}
@@ -32,3 +31,6 @@ Replace next surround | gsrn{old}{new}
 ## lazy-git @lazy-git @git
 
 Open lazy-git | <leader>lg
+
+## change-function @change-function
+Reorder function arguments (use shift k/j to move up/down, x to delete, i to add arguments, ENTER to confirm) | <leader>crl
