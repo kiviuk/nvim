@@ -1,5 +1,4 @@
 return {
-  -- A name for your local plugin. Using a path-like name is a good convention.
   "mobe/bannarizer.nvim",
 
   -- This is the most important part for a local plugin.
@@ -35,6 +34,27 @@ return {
       require("bannarizer").bannarize_range(opts)
     end, {
       range = true, -- Crucial: allows the command to accept a range like :., :'<,'>
+      nargs = "?",
     })
   end,
 }
+
+--- How to Use
+-- After placing these files in the correct locations and restarting Neovim, you can use the functionality as follows:
+--
+--     With the keymap (default width):
+--
+--         Place your cursor on a line and press <leader>b in Normal mode.
+--
+--         Select multiple lines in Visual mode and press <leader>b.
+--
+--     With the command (default width):
+--
+--         On a line, type :Bannarize and press Enter.
+--
+--     With the command (custom width):
+--
+--         On a line, type :Bannarize 80 and press Enter.
+--
+--         Select lines in Visual mode and type :'<,'>Bannarize 120 and press Enter.
+---

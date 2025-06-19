@@ -6,9 +6,11 @@ local M = {}
 -- @param line_content (string) The full content of the line to be transformed.
 -- @return (string, nil) or (nil, string)
 ---
-local function create_banner_from_text(line_content)
+local function create_banner_from_text(line_content, opts)
+  opts = opts or {} -- Ensure opts is a table to avoid errors
+
   -- 1. Get Configuration
-  local total_width = vim.opt.textwidth:get()
+  local total_width = opts.width or vim.opt.textwidth:get()
   if total_width == 0 then
     total_width = 96
   end
@@ -32,8 +34,9 @@ local function create_banner_from_text(line_content)
   text = vim.trim(text:gsub("=", ""))
   text = text:upper()
 
+  -- Gracefully handle empty/non-text lines by returning the original line
   if not text or text == "" then
-    return line_content -- Gracefully return original line
+    return line_content
   end
 
   -- 4. Calculate Padding and Build Banner
@@ -41,7 +44,7 @@ local function create_banner_from_text(line_content)
   local prefix_len = #comment_prefix + 1
   local min_width = prefix_len + #spaced_text + 2
   if total_width < min_width then
-    return nil, "Text is too long for current width (" .. total_width .. ")."
+    return nil, "Text is too long for width " .. total_width .. " (needs " .. min_width .. ")."
   end
 
   local remaining_width = total_width - prefix_len - #spaced_text
@@ -55,17 +58,25 @@ local function create_banner_from_text(line_content)
 end
 
 ---
--- Bannarizes a range of lines. This is the main public function of our module.
--- @param opts A table from a command, containing `line1` and `line2`.
+-- Public API: Bannarizes a range of lines.
+-- Accepts command options including line range and arguments.
+-- @param cmd_opts A table from a command, containing `line1`, `line2`, and `args`.
 ---
-function M.bannarize_range(opts)
-  local first = opts.line1
-  local last = opts.line2
+function M.bannarize_range(cmd_opts)
+  local banner_opts = {
+    -- Parse the width from the command arguments.
+    -- tonumber("80") -> 80, tonumber("") -> nil
+    width = tonumber(cmd_opts.args),
+  }
+
+  local first = cmd_opts.line1
+  local last = cmd_opts.line2
   local original_lines = vim.api.nvim_buf_get_lines(0, first - 1, last, false)
   local lines_to_set = {}
 
   for _, line in ipairs(original_lines) do
-    local new_line, err = create_banner_from_text(line)
+    -- Pass the banner_opts table down to the core function
+    local new_line, err = create_banner_from_text(line, banner_opts)
     if err then
       vim.notify("Bannarizer Error: " .. err, vim.log.levels.ERROR)
       return
