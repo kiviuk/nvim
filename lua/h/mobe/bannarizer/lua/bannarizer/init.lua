@@ -1,109 +1,97 @@
 local M = {}
 
--- Store last used width for repeat
-local last_opts = {}
+-- Configuration constants
+local C = {
+  DEFAULT_WIDTH = 96,
+}
 
+-- Buffer-local storage for the last used width
+local function get_last_width()
+  return vim.b.bannarizer_last_width
+end
+
+local function set_last_width(width)
+  vim.b.bannarizer_last_width = width
+end
+
+--- Create a banner line from input text.
+--- @param line_content string
+--- @param opts table (expects `width`)
+--- @return string|nil, string|nil
 local function create_banner_from_text(line_content, opts)
-  opts = opts or {}
+  local total_width = opts.width
+  local cs = vim.bo.commentstring or "# %s"
+  local comment_prefix = cs:match("^%s*(.-)%%s") or "#"
+  local comment_pattern = "^" .. vim.pesc(comment_prefix) .. "+%s*"
 
-  local total_width = opts.width or vim.opt.textwidth:get()
-  if total_width == 0 then
-    total_width = 96
-  end
-
-  local comment_prefix
-  local text = line_content
-
-  if vim.startswith(text, "//") then
-    comment_prefix = "//"
-    text = text:gsub("^//+", "")
-  elseif vim.startswith(text, "#") then
-    comment_prefix = "#"
-    text = text:gsub("^#+", "")
-  else
-    local cs = vim.bo.commentstring or "# %s"
-    comment_prefix = cs:match("^%s*(.-)%%s") or "#"
-  end
-
-  text = vim.trim(text:gsub("=", ""))
-  text = text:upper()
+  local text = line_content:gsub(comment_pattern, "")
+  text = vim.trim(text:gsub("=", "")):upper()
 
   if text == "" then
     return line_content
   end
 
   local spaced_text = " " .. text .. " "
-  local prefix_len = #comment_prefix + 1
-  local min_width = prefix_len + #spaced_text + 2
+  local min_width = #comment_prefix + 1 + #spaced_text + 2
   if total_width < min_width then
-    return nil, "Text too long for width " .. total_width .. " (needs " .. min_width .. ")"
+    return nil, ("Text too long for width %d (needs at least %d)"):format(total_width, min_width)
   end
 
-  local remaining = total_width - prefix_len - #spaced_text
-  local left = string.rep("=", math.floor(remaining / 2))
-  local right = string.rep("=", remaining - #left)
-  local new_line = comment_prefix .. " " .. left .. spaced_text .. right
+  local remaining = total_width - #comment_prefix - 1 - #spaced_text
+  local left = math.floor(remaining / 2)
+  local right = remaining - left
+
+  local new_line = ("%s %s%s%s"):format(comment_prefix, string.rep("=", left), spaced_text, string.rep("=", right))
 
   return new_line
 end
 
+--- Bannarize a range of lines.
+--- @param cmd_opts table (from user command)
+--- @param skip_repeat boolean? If true, disables repeat#set to avoid recursion
 function M.bannarize_range(cmd_opts, skip_repeat)
   local width = tonumber(cmd_opts.args)
+    or get_last_width()
+    or (vim.opt.textwidth:get() > 0 and vim.opt.textwidth:get())
+    or C.DEFAULT_WIDTH
 
-  if not width and last_opts.width then
-    width = last_opts.width
-  end
-  if not width or width == 0 then
-    width = vim.opt.textwidth:get()
-    if width == 0 then
-      width = 96
-    end
-  end
-
-  last_opts.width = width
-  local banner_opts = { width = width }
+  set_last_width(width)
 
   local first = cmd_opts.line1
   local last = cmd_opts.line2
   local original_lines = vim.api.nvim_buf_get_lines(0, first - 1, last, false)
-  local lines_to_set = {}
+  local new_lines = {}
 
   for _, line in ipairs(original_lines) do
-    local new_line, err = create_banner_from_text(line, banner_opts)
+    local new_line, err = create_banner_from_text(line, { width = width })
     if err then
       vim.notify("Bannarizer Error: " .. err, vim.log.levels.ERROR)
       return
     end
-    table.insert(lines_to_set, new_line)
+    table.insert(new_lines, new_line)
   end
 
-  vim.api.nvim_buf_set_lines(0, first - 1, last, false, lines_to_set)
+  vim.api.nvim_buf_set_lines(0, first - 1, last, false, new_lines)
 
   if not skip_repeat then
     vim.fn["repeat#set"](":BannarizerRepeat\n", -1)
   end
 end
 
+--- Repeat the last bannarize action on the current line
 function M.repeat_last()
   local line = vim.fn.line(".")
-  M.bannarize_range({
-    line1 = line,
-    line2 = line,
-    args = tostring(last_opts.width),
-  }, true)
+  M.bannarize_range({ line1 = line, line2 = line }, true)
   vim.fn["repeat#set"](":BannarizerRepeat\n", -1)
 end
---
--- Setter for last width (used by prompt)
-function M.set_last_width(width)
-  last_opts.width = width
-end
 
--- Expose function to prompt user for width and bannarize selection or line
+--- Prompt the user for a new width and bannarize selected or current line
 function M.prompt_and_bannarize()
+  local default = get_last_width() or (vim.opt.textwidth:get() > 0 and vim.opt.textwidth:get()) or C.DEFAULT_WIDTH
+
   vim.ui.input({
     prompt = "Enter banner width: ",
-    default = tostring(last_opts.width or (vim.opt.textwidth:get() ~= 0 and vim.opt.textwidth:get() or 96)),
+    default = tostring(default),
   }, function(input)
     if not input or input == "" then
       return
@@ -116,13 +104,9 @@ function M.prompt_and_bannarize()
 
     local mode = vim.api.nvim_get_mode().mode
     local line1, line2
-    if mode == "v" or mode == "V" then
+    if mode:find("^[vV]") then
       line1 = vim.fn.line("v")
       line2 = vim.fn.line(".")
-      if line1 > line2 then
-        line1, line2 = line2, line1
-      end
-      -- Exit visual mode
       vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
     else
       line1 = vim.fn.line(".")
@@ -130,13 +114,11 @@ function M.prompt_and_bannarize()
     end
 
     M.bannarize_range({
-      line1 = line1,
-      line2 = line2,
+      line1 = math.min(line1, line2),
+      line2 = math.max(line1, line2),
       args = tostring(width),
     })
-
-    -- Update remembered width for future repeats
-    M.set_last_width(width)
   end)
 end
+
 return M

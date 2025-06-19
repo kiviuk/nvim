@@ -21,10 +21,14 @@ Close terminal | <leader>tc
 
 ## mini.surround @mini @surround @gs
 
-Add surround to motion/selection | gsa{motion}
+Add surround to motion/selection (gsaiw") | gsa{motion}
 Add surround to visual selection | gsa (visual mode)
-Delete surround | gsd{char}
-Replace surround | gsr{old}{new}
+Delete surround (gsd") | gsd{char}
+Replace surround (gsr'" replace ' width | gsr{old}{new}
 Find next surround | gsf{char}
 Find previous surround | gsF{char}
 Replace next surround | gsrn{old}{new}
+
+## lazy-git @lazy-git @git
+
+Open lazy-git | <leader>lg
