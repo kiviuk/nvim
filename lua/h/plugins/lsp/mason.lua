@@ -139,7 +139,7 @@ return {
       },
       format_on_save = {
         lsp_format = false, -- IMPORTANT: Prevent conflicts with LSP servers also offering formatting
-        async = true,
+        async = false,
         timeout_ms = 1000,
       },
     },
@@ -153,5 +153,21 @@ return {
         desc = "Format buffer/range (Conform)",
       },
     },
+  },
+  {
+    "saecki/crates.nvim",
+    ft = { "toml" },
+    config = function()
+      require("crates").setup({
+        completion = {
+          cmp = {
+            enabled = true,
+          },
+        },
+      })
+      require("cmp").setup.buffer({
+        sources = { { name = "crates" } },
+      })
+    end,
   },
 }
