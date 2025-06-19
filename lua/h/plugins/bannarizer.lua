@@ -1,60 +1,45 @@
 return {
   "mobe/bannarizer.nvim",
 
-  -- This is the most important part for a local plugin.
-  -- It tells lazy.nvim where to find the plugin's source code.
-  dir = vim.fn.stdpath("config") .. "/lua/h/mobe/bannarizer.nvim",
+  dir = vim.fn.stdpath("config") .. "/lua/h/mobe/bannarizer",
 
-  -- Lazy-load the plugin when the :Bannarize command is used.
-  cmd = "Bannarize",
+  cmd = { "Bannarize", "BannarizerRepeat" },
 
-  -- Also lazy-load when these keys are pressed.
-  -- This is the preferred LazyVim way to set up keymaps.
   keys = {
     {
       "<leader>b",
-      ":.Bannarize<CR>",
+      ":Bannarize<CR>",
       mode = "n",
-      desc = "Bannarize Current Line",
+      desc = "Bannarize current line",
     },
     {
       "<leader>b",
       ":'<,'>Bannarize<CR>",
       mode = "v",
-      desc = "Bannarize Selection",
+      desc = "Bannarize selection",
+    },
+    {
+      "<leader>B",
+      function()
+        require("bannarizer").prompt_and_bannarize()
+      end,
+      mode = { "n", "v" },
+      desc = "Bannarize with width prompt",
     },
   },
 
-  -- The config function runs once after the plugin is loaded.
-  -- This is the perfect place to set up commands.
   config = function()
+    -- Create :Bannarize command (accepts range and optional width argument)
     vim.api.nvim_create_user_command("Bannarize", function(opts)
-      -- The require path 'bannarizer' maps to the 'lua/bannarizer/init.lua' file
-      -- inside your plugin's directory.
       require("bannarizer").bannarize_range(opts)
     end, {
-      range = true, -- Crucial: allows the command to accept a range like :., :'<,'>
+      range = true,
       nargs = "?",
     })
+
+    -- Create repeat command to be used by repeat#set
+    vim.api.nvim_create_user_command("BannarizerRepeat", function()
+      require("bannarizer").repeat_last()
+    end, {})
   end,
 }
-
---- How to Use
--- After placing these files in the correct locations and restarting Neovim, you can use the functionality as follows:
---
---     With the keymap (default width):
---
---         Place your cursor on a line and press <leader>b in Normal mode.
---
---         Select multiple lines in Visual mode and press <leader>b.
---
---     With the command (default width):
---
---         On a line, type :Bannarize and press Enter.
---
---     With the command (custom width):
---
---         On a line, type :Bannarize 80 and press Enter.
---
---         Select lines in Visual mode and type :'<,'>Bannarize 120 and press Enter.
----
