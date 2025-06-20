@@ -148,6 +148,19 @@ keymap.set("n", "<leader>u", function()
   require("telescope.builtin").lsp_references()
 end, { noremap = true, silent = true, desc = "Find all references (LSP)" })
 
+vim.keymap.set(
+  "v",
+  "<S-C-Down>",
+  ":m '>+1<CR>gv=gv",
+  { noremap = true, silent = true, desc = "moves lines down in visual selection" }
+)
+vim.keymap.set(
+  "v",
+  "<S-C-Up>",
+  ":m '<-2<CR>gv=gv",
+  { noremap = true, silent = true, desc = "moves lines up in visual selection" }
+)
+
 -- <leader>ä
 keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })
 
