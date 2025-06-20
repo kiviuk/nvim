@@ -1,8 +1,17 @@
+-- https://github.com/Sin-cy/dotfiles/blob/main/nvim/.config/nvim/lua/sethy/core/keymaps.lua
+
 vim.g.mapleader = " "
 
+local opts = { noremap = true, silent = true }
 local keymap = vim.keymap
 
-keymap.set("i", "jk", "<ESC>", { desc = "Exit i mode with jk" })
+-- Helper function to merge defaults with per-mapping options
+local function map(mode, lhs, rhs, extra_opts)
+  local options = vim.tbl_extend("force", opts, extra_opts or {})
+  keymap.set(mode, lhs, rhs, options)
+end
+
+map("i", "jk", "<ESC>", { desc = "Exit i mode with jk" })
 keymap.set("n", "<leader>.", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- inc/dec numbers
@@ -27,9 +36,26 @@ keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save
 -- Navigate between tree explorer and editor
 keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
 keymap.set("n", "<C-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
+--
+-- Copy filepath to the clipboard
+keymap.set("n", "<leader>fp", function()
+  local filePath = vim.fn.expand("%:~") -- Gets the file path relative to the home directory
+  vim.fn.setreg("+", filePath) -- Copy the file path to the clipboard register
+  print("File path copied to clipboard: " .. filePath) -- Optional: print message to confirm
+end, { desc = "Copy file path to clipboard" })
+
+-- Toggle LSP diagnostics visibility
+local isLspDiagnosticsVisible = true
+vim.keymap.set("n", "<leader>lx", function()
+  isLspDiagnosticsVisible = not isLspDiagnosticsVisible
+  vim.diagnostic.config({
+    virtual_text = isLspDiagnosticsVisible,
+    underline = isLspDiagnosticsVisible,
+  })
+end, { desc = "Toggle LSP diagnostics" })
 
 -- New Terminal
-keymap.set("n", "<leader>t", function()
+map("n", "<leader>t", function()
   vim.cmd("tabnew")
   vim.cmd("terminal")
   vim.cmd("startinsert")
@@ -77,6 +103,9 @@ vim.api.nvim_set_keymap(
   [[<C-\><C-n>:tabnext<CR>]],
   { noremap = true, silent = true, desc = "Switch to next tab from terminal" }
 )
+
+vim.keymap.set("v", "<", "<gv", opts)
+vim.keymap.set("v", ">", ">gv", opts)
 
 -- Map <Esc><Esc> to exit terminal mode *and* close the window
 -- vim.api.nvim_set_keymap("t", "<Esc><Esc>", [[<C-\><C-n>:close<CR>]], { noremap = true, silent = true })
@@ -148,17 +177,64 @@ keymap.set("n", "<leader>u", function()
   require("telescope.builtin").lsp_references()
 end, { noremap = true, silent = true, desc = "Find all references (LSP)" })
 
-vim.keymap.set(
+keymap.set(
   "v",
   "<S-C-Down>",
   ":m '>+1<CR>gv=gv",
   { noremap = true, silent = true, desc = "moves lines down in visual selection" }
 )
-vim.keymap.set(
+keymap.set(
   "v",
   "<S-C-Up>",
   ":m '<-2<CR>gv=gv",
   { noremap = true, silent = true, desc = "moves lines up in visual selection" }
+)
+
+keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half-page down, centre" })
+keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Half-page up, centre" })
+
+-- The mapping changes their behavior so that after jumping:
+-- zzz centers the cursor line in the window (like zz).
+-- v reopens any folds at the cursor position (like zv).
+keymap.set("n", "n", "nzzzv")
+keymap.set("n", "N", "Nzzzv")
+
+-- Paste in Visual Mode Without Overwriting Clipboard
+keymap.set("x", "<leader>p", [["_dP]])
+
+-- Paste in Visual Mode Without Overwriting Clipboard (Alternative)
+keymap.set("v", "p", '"_dp', opts)
+
+-- Delete Without Affecting Clipboard
+keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+
+-- Prevents deleted characters from copying to clipboard.
+keymap.set("n", "x", '"_x', opts)
+
+-- Executes shell command from in here making file executable
+keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "makes file executable" })
+
+-- Join lines
+keymap.set("n", "J", "mzJ`z")
+
+-- Hightlight yanking
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})
+
+-- Exit Insert Mode with Ctrl+C
+keymap.set("i", "<C-c>", "<Esc>")
+--
+-- Replace the word cursor is on globally
+keymap.set(
+  "n",
+  "<leader>s",
+  [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+  { desc = "Replace word cursor is on globally" }
 )
 
 -- <leader>ä
