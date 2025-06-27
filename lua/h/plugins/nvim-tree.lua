@@ -1,5 +1,6 @@
 return {
   "nvim-tree/nvim-tree.lua",
+  enable = true,
   cmd = { "NvimTreeToggle", "NvimTreeFindFile", "NvimTreeFocus" },
   keys = {
     { "<leader>ee", "<cmd>NvimTreeToggle<CR>", desc = "Toggle file explorer" },

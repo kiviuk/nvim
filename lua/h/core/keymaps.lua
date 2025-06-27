@@ -1,4 +1,6 @@
 -- https://github.com/Sin-cy/dotfiles/blob/main/nvim/.config/nvim/lua/sethy/core/keymaps.lua
+-- The Ultimate Neovim Setup Guide From Scratch
+-- https://youtu.be/FGVY7gbaoQI (https://github.com/Sin-cy/dotfiles/blob/main/nvim/.config/nvim/lua/sethy/core/keymaps.lua)
 
 vim.g.mapleader = " "
 
@@ -32,6 +34,7 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 
 -- Save file
 keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
+keymap.set("n", "??", "ZZ", { noremap = true, silent = true, desc = "Save file" })
 
 -- Navigate between tree explorer and editor
 keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
@@ -153,22 +156,6 @@ keymap.set("n", "<leader>qs", function()
   vim.cmd("xa") -- Equivalent to :wqa (write all changed buffers and quit)
 end, { desc = "Save session + all files and quit" })
 
--- Mark current file
-keymap.set("n", "<leader>ha", function()
-  require("harpoon.mark").add_file()
-end, { desc = "Harpoon current file" })
--- Toggle Harpoon menu
-keymap.set("n", "<leader>hm", function()
-  require("harpoon.ui").toggle_quick_menu()
-end, { desc = "Toggle Harpoon menu" })
--- Navigate to marked files
-keymap.set("n", "<leader>hn", function()
-  require("harpoon.ui").nav_next()
-end, { desc = "Harpoon to next file" })
-keymap.set("n", "<leader>hy", function()
-  require("harpoon.ui").nav_prev()
-end, { desc = "Harpoon to previous file" })
-
 keymap.set("n", "gd", function()
   require("telescope.builtin").lsp_definitions()
 end, { noremap = true, silent = true, desc = "Go to definition (LSP)" })
@@ -217,6 +204,9 @@ keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "ma
 -- Join lines
 keymap.set("n", "J", "mzJ`z")
 
+-- Git log
+keymap.set("n", "<leader>gl", "<cmd>Flogsplit<CR>", { desc = "Git log" })
+
 -- Hightlight yanking
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
@@ -236,6 +226,8 @@ keymap.set(
   [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
   { desc = "Replace word cursor is on globally" }
 )
+
+keymap.set("n", "vw", "viw", { noremap = true })
 
 -- <leader>ä
 keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })

@@ -1,6 +1,7 @@
 return {
   "gbprod/substitute.nvim",
   event = { "VeryLazy" },
+  enable = false,
   config = function()
     local substitute = require("substitute")
     local exchange = require("substitute.exchange")
