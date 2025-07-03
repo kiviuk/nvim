@@ -216,9 +216,21 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+-- Duplicate current line in normal mode (like Command+D)
+vim.keymap.set("n", "<C-d>", ":t.<CR>", { noremap = true, silent = true })
+
+-- Duplicate selected lines in visual mode
+vim.keymap.set("v", "<C-d>", function()
+  -- Copy selected lines below the selection
+  vim.cmd("normal! y")
+  vim.cmd("normal! `>p")
+  -- Reselect the newly duplicated lines
+  vim.cmd("normal! gv")
+end, { noremap = true, silent = true })
+
 -- Exit Insert Mode with Ctrl+C
 keymap.set("i", "<C-c>", "<Esc>")
---
+
 -- Replace the word cursor is on globally
 keymap.set(
   "n",
