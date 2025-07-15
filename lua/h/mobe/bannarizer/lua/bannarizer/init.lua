@@ -37,11 +37,11 @@ local function create_banner_from_text(line_content, opts)
     return nil, ("Text too long for width %d (needs at least %d)"):format(total_width, min_width)
   end
 
-  local remaining = total_width - #comment_prefix - 1 - #spaced_text
+  local remaining = total_width - #comment_prefix - #spaced_text
   local left = math.floor(remaining / 2)
   local right = remaining - left
 
-  local new_line = ("%s %s%s%s"):format(comment_prefix, string.rep("=", left), spaced_text, string.rep("=", right))
+  local new_line = ("%s%s%s%s"):format(comment_prefix, string.rep("=", left), spaced_text, string.rep("=", right))
 
   return new_line
 end
@@ -77,7 +77,7 @@ function M.bannarize_range(cmd_opts, skip_repeat)
     vim.fn["repeat#set"](":BannarizerRepeat\n", -1)
   end
 end
-
+--  =========================================== WCDN ===========================================
 --- Repeat the last bannarize action on the current line
 function M.repeat_last()
   local line = vim.fn.line(".")
