@@ -4,5 +4,12 @@ return {
   main = "ibl",
   opts = {
     indent = { char = "┊" },
+    exclude = {
+      filetypes = {
+        "mason",
+        "markdown",
+        "text",
+      },
+    },
   },
 }

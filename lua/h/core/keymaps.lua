@@ -16,6 +16,15 @@ end
 map("i", "jk", "<ESC>", { desc = "Exit i mode with jk" })
 keymap.set("n", "<leader>.", ":nohl<CR>", { desc = "Clear search highlights" })
 
+-- Set 0 to the first non-whitespace character in line
+vim.keymap.set("n", "0", "^", { noremap = true })
+vim.keymap.set("n", "^", "0", { noremap = true })
+
+-- Visual mode
+-- Set 0 to the first non-whitespace character in line
+vim.keymap.set("v", "0", "^", { noremap = true })
+vim.keymap.set("v", "^", "0", { noremap = true })
+
 -- inc/dec numbers
 keymap.set("n", "<leader>=", "<C-a>", { desc = "Inc numb" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Dec numb" })
@@ -37,8 +46,8 @@ keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save
 keymap.set("n", "??", "ZZ", { noremap = true, silent = true, desc = "Save file" })
 
 -- Navigate between tree explorer and editor
-keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
-keymap.set("n", "<C-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
+-- keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
+-- keymap.set("n", "<C-Right>", "<cmd>wincmd p<CR>", { desc = "Focus Back to Buffer" })
 --
 -- Copy filepath to the clipboard
 keymap.set("n", "<leader>fp", function()
@@ -110,6 +119,9 @@ vim.api.nvim_set_keymap(
 vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)
 
+-- Ctrl-a to copy all
+vim.keymap.set("n", "<C-a>", ":%yank<CR>", { noremap = true, silent = true })
+
 -- Map <Esc><Esc> to exit terminal mode *and* close the window
 -- vim.api.nvim_set_keymap("t", "<Esc><Esc>", [[<C-\><C-n>:close<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap("t", "<Esc><Esc>", [[<C-\><C-n>gt]], { noremap = true, silent = true })
@@ -164,19 +176,28 @@ keymap.set("n", "<leader>u", function()
   require("telescope.builtin").lsp_references()
 end, { noremap = true, silent = true, desc = "Find all references (LSP)" })
 
+-- Move lines
 keymap.set(
   "v",
-  "<S-C-Down>",
+  "<S-A-Down>",
   ":m '>+1<CR>gv=gv",
-  { noremap = true, silent = true, desc = "moves lines down in visual selection" }
+  { noremap = true, silent = true, desc = "Move lines down in visual selection" }
 )
 keymap.set(
   "v",
-  "<S-C-Up>",
+  "<S-A-Up>",
   ":m '<-2<CR>gv=gv",
-  { noremap = true, silent = true, desc = "moves lines up in visual selection" }
+  { noremap = true, silent = true, desc = "Move lines up in visual selection" }
 )
+vim.keymap.set(
+  "n",
+  "<S-A-Down>",
+  ":m .+1<CR>==",
+  { noremap = true, silent = true, desc = "Move line down in normal mode" }
+)
+vim.keymap.set("n", "<S-A-Up>", ":m .-2<CR>==", { noremap = true, silent = true, desc = "Move line up in normal mode" })
 
+-- Scroll and centre
 keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half-page down, centre" })
 keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Half-page up, centre" })
 
@@ -186,17 +207,22 @@ keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Half-page up, centre" })
 keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
--- Paste in Visual Mode Without Overwriting Clipboard
-keymap.set("x", "<leader>p", [["_dP]])
+-- Paste in Visual Mode Without Overwriting Clipboard (deleted content goes /dev/null)
+keymap.set("x", "<leader>p", [["_dP]], { noremap = true, silent = true, desc = "Paste without Affecting Clipboard" })
 
 -- Paste in Visual Mode Without Overwriting Clipboard (Alternative)
-keymap.set("v", "p", '"_dp', opts)
+keymap.set("v", "p", '"_dp', { noremap = true, silent = true, desc = "Paste without Affecting Clipboard" })
 
 -- Delete Without Affecting Clipboard
-keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+keymap.set(
+  { "n", "v" },
+  "<leader>d",
+  [["_d]],
+  { noremap = true, silent = true, desc = "Delete without Affecting Clipboard (visual mode)" }
+)
 
 -- Prevents deleted characters from copying to clipboard.
-keymap.set("n", "x", '"_x', opts)
+keymap.set("n", "x", '"_x', { noremap = true, silent = true, desc = "Delete without Affecting Clipboard" })
 
 -- Executes shell command from in here making file executable
 keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "makes file executable" })
@@ -205,7 +231,7 @@ keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "ma
 keymap.set("n", "J", "mzJ`z")
 
 -- Git log
-keymap.set("n", "<leader>gl", "<cmd>Flogsplit<CR>", { desc = "Git log" })
+keymap.set("n", "<leader>gl", "<cmd>Flogsplit<CR>", { silent = true, desc = "Git log" })
 
 -- Hightlight yanking
 vim.api.nvim_create_autocmd("TextYankPost", {
