@@ -30,8 +30,8 @@ keymap.set("n", "<leader>=", "<C-a>", { desc = "Inc numb" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Dec numb" })
 
 -- window management
-keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vert" })
-keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horiz" })
+keymap.set("n", "<leader>sh", "<C-w>v", { desc = "Split window vert" })
+keymap.set("n", "<leader>sv", "<C-w>s", { desc = "Split window horiz" })
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Split window equal size" })
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 
@@ -43,6 +43,7 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 
 -- Save file
 keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
+keymap.set("n", "<Esc><Esc>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 keymap.set("n", "??", "ZZ", { noremap = true, silent = true, desc = "Save file" })
 
 -- Navigate between tree explorer and editor
@@ -51,8 +52,8 @@ keymap.set("n", "??", "ZZ", { noremap = true, silent = true, desc = "Save file" 
 --
 -- Copy filepath to the clipboard
 keymap.set("n", "<leader>fp", function()
-  local filePath = vim.fn.expand("%:~") -- Gets the file path relative to the home directory
-  vim.fn.setreg("+", filePath) -- Copy the file path to the clipboard register
+  local filePath = vim.fn.expand("%:~")                -- Gets the file path relative to the home directory
+  vim.fn.setreg("+", filePath)                         -- Copy the file path to the clipboard register
   print("File path copied to clipboard: " .. filePath) -- Optional: print message to confirm
 end, { desc = "Copy file path to clipboard" })
 
@@ -267,9 +268,6 @@ keymap.set(
 
 keymap.set("n", "vw", "viw", { noremap = true })
 
--- <leader>ä
-keymap.set("n", "<leader>'", vim.diagnostic.open_float, { desc = "Show diagnostics in floating window" })
-
 -- Save / recall last cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*",
@@ -279,5 +277,43 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
+  end,
+})
+
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  -- Use LspAttach autocommand to only map the following keys after the language server attaches
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "Go to Definition" }))
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, vim.tbl_extend("force", opts, { desc = "Go to Declaration" }))
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, vim.tbl_extend("force", opts, { desc = "References" }))
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation,
+      vim.tbl_extend("force", opts, { desc = "Go to Implementation" }))
+    vim.keymap.set("n", "<leader><space>", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover Document" }))
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename Symbol" }))
+    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,
+      vim.tbl_extend("force", opts, { desc = "Code Action" }))
+    vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition,
+      vim.tbl_extend("force", opts, { desc = "Type Definition" }))
+
+    vim.keymap.set("n", "<leader>f", function()
+      vim.lsp.buf.format { async = true }
+    end, vim.tbl_extend("force", opts, { desc = "Format File" }))
+
+    vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open Diagnostic List" })
+    -- Open the diagnostic under the cursor in a float window
+    vim.keymap.set("n", "<leader>d", function()
+      vim.diagnostic.open_float {
+        border = "rounded",
+      }
+    end, vim.tbl_extend("force", opts, { desc = "Open Diagnostic in floating window" }))
   end,
 })
