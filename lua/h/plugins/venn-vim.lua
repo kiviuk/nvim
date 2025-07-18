@@ -55,7 +55,7 @@ return {
             vim.keymap.set("v", "f", ":VBox<CR>", { buffer = true, noremap = true, silent = true })
 
           else
-            
+
             -- Disable the mode and remove the keymaps.
             vim.wo.virtualedit = ""
             vim.wo.cursorline = false
@@ -77,7 +77,7 @@ return {
 
         end,
         noremap = true,
-        desc = "Enable/Disable [V]enn diagramming mode",
+        desc = "Toggle [V]enn diagramming mode",
       },
     },
   },

@@ -177,6 +177,11 @@ keymap.set("n", "<leader>u", function()
   require("telescope.builtin").lsp_references()
 end, { noremap = true, silent = true, desc = "Find all references (LSP)" })
 
+-- Activate Zen Mode
+vim.keymap.set("n", "<leader>z", function()
+  require("zen-mode").toggle()
+end, { desc = "Toggle Zen Mode" })
+
 -- Move lines
 keymap.set(
   "v",
