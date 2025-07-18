@@ -4,24 +4,21 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
     "mfussenegger/nvim-dap",
-    "hrsh7th/nvim-cmp",
-    "hrsh7th/cmp-nvim-lsp",
   },
-  -- The config function now runs automatically for the correct filetypes
   config = function()
-    -- Get the bare config and add our customizations
     local metals_config = require("metals").bare_config()
-    metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+    metals_config.capabilities = vim.lsp.protocol.make_client_capabilities()
 
     metals_config.on_attach = function(client, bufnr)
-      -- Helper for setting buffer-local keymaps
-      local map = function(keys, func, desc)
-        vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
-      end
-      -- Your core keymaps
-      map("K", vim.lsp.buf.hover, "Hover")
-      map("gd", vim.lsp.buf.definition, "Go To Definition")
-      -- ... etc
+        vim.keymap.set(
+          "n",
+          "<leader>oi", -- "oi" for "organize imports"
+          function()
+            vim.lsp.buf.execute_command({ command = "metals.organize-imports" })
+          end,
+          { buffer = bufnr, desc = "Organize Imports (Metals)" }
+        )
     end
 
     metals_config.settings = {

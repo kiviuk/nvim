@@ -3,11 +3,14 @@ return {
   event = "VeryLazy",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "hrsh7th/nvim-cmp",
+    "saghen/blink.cmp",
   },
+
   config = function()
     require("codeium").setup({
       -- any specific config options here
+      enable_cmp_source = false,
     })
   end,
 }
+
