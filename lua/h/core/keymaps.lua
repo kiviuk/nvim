@@ -43,8 +43,18 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer
 
 -- Save file
 keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
-keymap.set("n", "<Esc><Esc>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
-keymap.set("n", "??", "ZZ", { noremap = true, silent = true, desc = "Save file" })
+keymap.set("n", "??", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
+keymap.set("n", "<leader><leader>s", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
+keymap.set("n", "???", "ZZ", { noremap = true, silent = true, desc = "Save file" })
+
+-- Source
+keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>", { noremap = true, silent = true, desc = "Source %" })
+
+-- Copy messages to clipboard
+vim.keymap.set("n", "<leader>m", function()
+  vim.fn.setreg("*", vim.fn.trim(vim.fn.execute("1messages")))
+  vim.notify("copied", vim.log.levels.INFO)
+end, { desc = "Copy :messages to clipboard" })
 
 -- Navigate between tree explorer and editor
 -- keymap.set("n", "<C-Left>", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
@@ -120,8 +130,8 @@ vim.api.nvim_set_keymap(
 vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)
 
--- Ctrl-a to copy all
-vim.keymap.set("n", "<C-a>", ":%yank<CR>", { noremap = true, silent = true })
+-- ~~ to copy all
+vim.keymap.set("n", "~~", ":%yank<CR>", { noremap = true, silent = true })
 
 -- Map <Esc><Esc> to exit terminal mode *and* close the window
 -- vim.api.nvim_set_keymap("t", "<Esc><Esc>", [[<C-\><C-n>:close<CR>]], { noremap = true, silent = true })
@@ -248,8 +258,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
--- Duplicate current line in normal mode (like Command+D)
-vim.keymap.set("n", "<C-d>", ":t.<CR>", { noremap = true, silent = true })
+-- Duplicate current line in normal mode (Option+d)
+vim.keymap.set("n", "<M-d>", ":t.<CR>", { noremap = true, silent = true })
 
 -- Duplicate selected lines in visual mode
 vim.keymap.set("v", "<C-d>", function()
@@ -259,9 +269,6 @@ vim.keymap.set("v", "<C-d>", function()
   -- Reselect the newly duplicated lines
   vim.cmd("normal! gv")
 end, { noremap = true, silent = true })
-
--- Exit Insert Mode with Ctrl+C
-keymap.set("i", "<C-c>", "<Esc>")
 
 -- Replace the word cursor is on globally
 keymap.set(
@@ -297,6 +304,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
 
+    vim.keymap.set("n", "<leader>,", require("telescope.builtin").lsp_references,
+      vim.tbl_extend("force", opts, { desc = "Find Usages (Telescope)" })
+    )
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, vim.tbl_extend("force", opts, { desc = "Go to Definition" }))
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, vim.tbl_extend("force", opts, { desc = "Go to Declaration" }))
     vim.keymap.set("n", "gr", vim.lsp.buf.references, vim.tbl_extend("force", opts, { desc = "References" }))

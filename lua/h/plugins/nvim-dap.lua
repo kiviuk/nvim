@@ -27,7 +27,6 @@ return {
     },
 
     -- Other dependencies...
-    { "williamboman/mason.nvim" },
     {
       "jay-babu/mason-nvim-dap.nvim",
       dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
