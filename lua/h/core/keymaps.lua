@@ -2,6 +2,10 @@
 -- The Ultimate Neovim Setup Guide From Scratch
 -- https://youtu.be/FGVY7gbaoQI (https://github.com/Sin-cy/dotfiles/blob/main/nvim/.config/nvim/lua/sethy/core/keymaps.lua)
 
+-- Open new line below or above
+-- while in insert mode type ctrl + o then o
+-- while in insert mode type ctrl + o then O
+
 vim.g.mapleader = " "
 
 local opts = { noremap = true, silent = true }
@@ -13,7 +17,10 @@ local function map(mode, lhs, rhs, extra_opts)
   keymap.set(mode, lhs, rhs, options)
 end
 
+-- Exit insert mode
 map("i", "jk", "<ESC>", { desc = "Exit i mode with jk" })
+
+-- Clear search highlights
 keymap.set("n", "<leader>.", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- Set 0 to the first non-whitespace character in line
@@ -100,18 +107,18 @@ end, { desc = "Open terminal in vertical split (insert mode)" })
 
 -- To switch to adjacent windows (e.g., editor pane next to terminal split)
 -- Assuming common layout: [Editor | Terminal]
-vim.api.nvim_set_keymap(
-  "t",
-  "<C-h>",
-  [[<C-\><C-n><C-w>h]],
-  { noremap = true, silent = true, desc = "Switch to left window from terminal" }
-)
-vim.api.nvim_set_keymap(
-  "t",
-  "<C-l>",
-  [[<C-\><C-n><C-w>l]],
-  { noremap = true, silent = true, desc = "Switch to right window from terminal" }
-)
+-- vim.api.nvim_set_keymap(
+--   "t",
+--   "<C-h>",
+--   [[<C-\><C-n><C-w>h]],
+--   { noremap = true, silent = true, desc = "Switch to left window from terminal" }
+-- )
+-- vim.api.nvim_set_keymap(
+--   "t",
+--   "<C-l>",
+--   [[<C-\><C-n><C-w>l]],
+--   { noremap = true, silent = true, desc = "Switch to right window from terminal" }
+-- )
 
 -- To switch between tabs (e.g., if terminal is in its own tab)
 vim.api.nvim_set_keymap(

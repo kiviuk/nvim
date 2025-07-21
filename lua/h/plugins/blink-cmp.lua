@@ -3,7 +3,8 @@ return {
     "saghen/blink.cmp",
     dependencies = {
         "mikavilpas/blink-ripgrep.nvim",
-        "Exafunction/windsurf.nvim"
+        "Exafunction/windsurf.nvim",
+        "windwp/nvim-autopairs",
     },
     build = "cargo +nightly build --release",
     event = "InsertEnter",
@@ -43,8 +44,8 @@ return {
                 },
             },
             list = {
-                selection = { preselect = false, auto_insert = true },
-                max_items = 5,
+                selection = { preselect = false, auto_insert = false },
+                max_items = 60,
             },
 
             menu = {
