@@ -58,7 +58,7 @@ keymap.set("n", "???", "ZZ", { noremap = true, silent = true, desc = "Save file"
 keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>", { noremap = true, silent = true, desc = "Source %" })
 
 -- Copy messages to clipboard
-vim.keymap.set("n", "<leader>m", function()
+vim.keymap.set("n", "<leader>k", function()
   vim.fn.setreg("*", vim.fn.trim(vim.fn.execute("1messages")))
   vim.notify("copied", vim.log.levels.INFO)
 end, { desc = "Copy :messages to clipboard" })
@@ -85,25 +85,25 @@ vim.keymap.set("n", "<leader>lx", function()
 end, { desc = "Toggle LSP diagnostics" })
 
 -- Toggle LSP Symbols
-vim.keymap.set('n', '<leader>ss', '<cmd>Telescope lsp_document_symbols<cr>', { desc = 'LSP Symbols (outline)' })
-vim.keymap.set('n', '<leader>st', '<cmd>Telescope treesitter<cr>', { desc = 'Treesitter Symbols (outline)' })
+vim.keymap.set('n', '<leader>ll', '<cmd>Telescope lsp_document_symbols<cr>', { desc = 'LSP Symbols (outline)' })
+vim.keymap.set('n', '<leader>lt', '<cmd>Telescope treesitter<cr>', { desc = 'Treesitter Symbols (outline)' })
 
 -- Only methods
-vim.keymap.set('n', '<leader>sm',
+vim.keymap.set('n', '<leader>lm',
   function() require('telescope.builtin').lsp_document_symbols({ symbols = { 'method' } }) end,
   { desc = 'LSP Symbols: methods only' })
 
 -- Methods AND functions
-vim.keymap.set('n', '<leader>sf',
+vim.keymap.set('n', '<leader>lf',
   function() require('telescope.builtin').lsp_document_symbols({ symbols = { 'method', 'function' } }) end,
   { desc = 'LSP Symbols: methods & functions' })
 
-vim.keymap.set('n', '<leader>sv',
+vim.keymap.set('n', '<leader>lv',
   function() require('telescope.builtin').lsp_document_symbols({ symbols = { 'variable' } }) end,
   { desc = 'LSP Symbols: variables only' })
 
 -- Classes, interfaces, methods
-vim.keymap.set('n', '<leader>sc',
+vim.keymap.set('n', '<leader>lc',
   function() require('telescope.builtin').lsp_document_symbols({ symbols = { 'class', 'interface', 'method' } }) end,
   { desc = 'LSP Symbols: class/interface/method' })
 
