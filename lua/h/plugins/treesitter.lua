@@ -1,11 +1,9 @@
--- File: lua/h/plugins/treesitter.lua (MODIFIED)
 return {
   "nvim-treesitter/nvim-treesitter",
   event = "VeryLazy",
   build = ":TSUpdate",
   dependencies = {
     "windwp/nvim-ts-autotag",
-    "nvim-treesitter/nvim-treesitter-textobjects",
   },
   config = function()
     local treesitter = require("nvim-treesitter.configs")

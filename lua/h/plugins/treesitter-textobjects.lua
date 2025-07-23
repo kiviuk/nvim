@@ -1,6 +1,9 @@
 return {
   "nvim-treesitter/nvim-treesitter-textobjects",
   lazy = true,
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter",
+  },
   config = function()
     require("nvim-treesitter.configs").setup({
       textobjects = {
@@ -9,6 +12,11 @@ return {
 
           -- Automatically jump forward to textobj, similar to targets.vim
           lookahead = true,
+
+          -- d (delete) + a= => da= (delete around assignment)
+          -- c (change) + a= => ca= (change around assignment)
+          -- y (yank/copy) + a= => ya= (yank around assignment)
+          -- v (visual select) + a= => va= (visually select around assignment)
 
           keymaps = {
             -- You can use the capture groups defined in textobjects.scm
@@ -67,7 +75,7 @@ return {
 
             -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
             -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
-            ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+            ["]s"] = { query = "@local.scope", query_group = "locals", desc = "Next scope" },
             ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
           },
           goto_next_end = {
