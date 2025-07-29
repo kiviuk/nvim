@@ -82,7 +82,8 @@ return {
         },
         snippets = { preset = "luasnip" },
         sources = {
-            default = { "lsp", "path", "snippets", "ripgrep", "buffer", "codeium" },
+            default = { "lsp" },
+            -- default = { "lsp", "path", "snippets", "ripgrep", "buffer", "codeium" },
             providers = {
                 ripgrep = {
                     module = "blink-ripgrep",

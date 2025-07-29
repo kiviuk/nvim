@@ -37,3 +37,5 @@ opt.sessionoptions:append("localoptions")
 
 opt.undofile = true
 opt.undodir = vim.fn.stdpath("state") .. "/undo"
+
+opt.winborder = "rounded"

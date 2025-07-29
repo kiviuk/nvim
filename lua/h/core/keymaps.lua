@@ -48,11 +48,22 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" })
 
+-- Show all keymaps
+keymap.set("n", "<leader>kk", "<cmd>Telescope keymaps<CR>", { desc = "List all keymaps" })
+
 -- Save file
 keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 keymap.set("n", "??", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 keymap.set("n", "<leader><leader>s", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 keymap.set("n", "???", "ZZ", { noremap = true, silent = true, desc = "Save file" })
+
+-- Jump to start of scala/python function
+vim.keymap.set('n', 'ff', '/^\\s*def<CR>:nohlsearch<CR>zz', { noremap = true, silent = true })
+vim.keymap.set('n', 'FF', '?^\\s*def<CR>:nohlsearch<CR>zz', { noremap = true, silent = true })
+
+-- Exit insert mode and move up/down a line
+vim.keymap.set('i', '<Up>', '<Esc>k', { noremap = true, silent = true })
+vim.keymap.set('i', '<Down>', '<Esc>j', { noremap = true, silent = true })
 
 -- Source
 keymap.set("n", "<leader><leader>x", "<cmd>source %<CR>", { noremap = true, silent = true, desc = "Source %" })

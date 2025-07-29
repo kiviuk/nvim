@@ -44,6 +44,9 @@ return {
       -- This is needed for the nvim-dap integration to work correctly
       require("metals").setup_dap()
 
+      -- Enable completion triggered by <c-x><c-o>
+      vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+
       local map = vim.keymap.set
       local opts = { buffer = bufnr, noremap = true, silent = true }
 

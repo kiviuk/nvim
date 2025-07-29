@@ -5,7 +5,30 @@ return {
   config = function()
     local lualine = require("lualine")
     local lazy_status = require("lazy.status")
+    local function get_file_size()
+      local filepath = vim.api.nvim_buf_get_name(0)
+      if filepath == "" then return "" end -- No file name associated with the buffer
 
+      -- Use pcall to gracefully handle errors (e.g., file not saved yet)
+      local ok, stats = pcall(vim.loop.fs_stat, filepath)
+      if not ok or not stats then return "" end
+
+      local size = stats.size
+      if size == 0 then return "" end
+
+      -- Format the size into a human-readable string (B, K, M, G, T)
+      local units = { 'B', 'K', 'M', 'G', 'T' }
+      local i = 1
+      while size >= 1024 and i < #units do
+        size = size / 1024
+        i = i + 1
+      end
+
+      -- Return the formatted string with a floppy disk icon
+      -- It shows decimals for KB and higher, but not for Bytes.
+      local format_str = (i == 1) and "%.0f%s" or "%.1f%s"
+      return "󰋊 " .. string.format(format_str, size, units[i])
+    end
     local colors = {
       blue = "#65D1FF",
       green = "#3EFFDC",
@@ -56,6 +79,12 @@ return {
       },
       sections = {
         lualine_x = {
+          -- { get_file_size }, -- Component for file size
+          {
+            function()
+              return " " .. vim.fn.line('$') -- Component for total lines
+            end
+          },
           {
             lazy_status.updates,
             cond = lazy_status.has_updates,

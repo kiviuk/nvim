@@ -1,6 +1,7 @@
 -- https://youtu.be/AAkrmfkC1L4?t=145
 return {
   "MeanderingProgrammer/render-markdown.nvim",
+  ft = { "markdown" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "echasnovski/mini.icons", -- or your preferred icon provider

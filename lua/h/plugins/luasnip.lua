@@ -1,5 +1,6 @@
 return {
   "L3MON4D3/LuaSnip",
+  event = "InsertEnter",
   -- follow latest release.
   version = "v2.*",
   -- install jsregexp (optional!).
