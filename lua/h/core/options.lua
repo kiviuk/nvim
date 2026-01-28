@@ -39,3 +39,14 @@ opt.undofile = true
 opt.undodir = vim.fn.stdpath("state") .. "/undo"
 
 opt.winborder = "rounded"
+
+-- Disable automatic comment continuation
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+  end,
+})
+
+-- Words can include hyphones 
+vim.opt.iskeyword:append("-")

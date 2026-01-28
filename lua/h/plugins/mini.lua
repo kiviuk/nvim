@@ -1,9 +1,10 @@
 return {
   -- Mini Nvim
-  { "echasnovski/mini.nvim", version = false },
+  { "echasnovski/mini.nvim", version = false, lazy = true },
   -- Comments
   {
     "echasnovski/mini.comment",
+    event = "VeryLazy",
     version = false,
     dependencies = {
       "JoosepAlviste/nvim-ts-context-commentstring",
@@ -97,7 +98,7 @@ return {
   -- Get rid of whitespace
   {
     "echasnovski/mini.trailspace",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "VeryLazy",
     config = function()
       local miniTrailspace = require("mini.trailspace")
 

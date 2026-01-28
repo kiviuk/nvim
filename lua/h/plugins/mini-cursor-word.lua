@@ -2,7 +2,7 @@ return {
   "echasnovski/mini.cursorword",
   version = "*", -- or false for latest
   -- Optional: load only on certain events
-  event = { "BufReadPost", "BufNewFile" },
+  event = "VeryLazy",
   config = function()
     require('mini.cursorword').setup({
       -- Delay (in ms) between moving cursor and highlight appearing

@@ -37,6 +37,10 @@ require("lazy").setup({
         -- Disable the slow, built-in XML ftdetect script
         -- slow, legacy XML filetype detection
         "xml",
+        "matchit",
+        "matchparen",
+        "tutor",
+        "tohtml",
       },
     },
   },

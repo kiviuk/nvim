@@ -182,8 +182,6 @@ vim.api.nvim_set_keymap("t", "<Esc><Esc>", [[<C-\><C-n>gt]], { noremap = true, s
 -- (Note: <leader>sx already closes current split, which works for terminals too)
 keymap.set("n", "<leader>tc", "<cmd>close<CR>", { desc = "Close terminal split" })
 
--- Close Neovim (force quit)
-keymap.set("n", "<leader>qq", ":qa!<CR>", { desc = "Force quit all" })
 
 -- keymap.set({ "n", "x" }, "<S-Up>", "gk", { desc = "Move/Extend selection up" })
 -- keymap.set({ "n", "x" }, "<S-Down>", "gj", { desc = "Move/Extend selection down" })
@@ -202,8 +200,11 @@ keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", { desc = "window right" }
 keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { desc = "window down" })
 keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { desc = "window up" })
 
+-- Close Neovim (force quit)
+keymap.set("n", "<leader>QQ", ":qa!<CR>", { desc = "Force quit all" })
+
 -- Save all and quit
-keymap.set("n", "<leader>qs", function()
+keymap.set("n", "<leader>QS", function()
   -- 1. Save the session first (if available)
   local success, _ = pcall(function()
     vim.cmd("SessionSave")
@@ -264,6 +265,15 @@ keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Half-page up, centre" })
 keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
+-- 1. PASTE: Always paste on a new line below/above in Normal Mode
+keymap.set("n", "p", ":put<CR>", { desc = "Paste on new line below" })
+keymap.set("n", "P", ":put!<CR>", { desc = "Paste on new line above" })
+
+-- 2. ADD EMPTY LINES: Without leaving Normal mode
+-- Using <leader>Enter and <leader>Shift+Enter to avoid conflict with SymbolsOutline
+keymap.set("n", "<leader>O", "m`O<Esc>``", { desc = "Add empty line above" })
+keymap.set("n", "<leader><CR>", "o<Esc>", { desc = "Add empty line below" })
+
 -- Paste in Visual Mode Without Overwriting Clipboard (deleted content goes /dev/null)
 keymap.set("x", "<leader>p", [["_dP]], { noremap = true, silent = true, desc = "Paste without Affecting Clipboard" })
 
@@ -282,7 +292,7 @@ keymap.set(
 keymap.set("n", "x", '"_x', { noremap = true, silent = true, desc = "Delete without Affecting Clipboard" })
 
 -- Executes shell command from in here making file executable
-keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "makes file executable" })
+-- keymap.set("n", "<leader>X", "<cmd>!chmod +x %<CR>", { silent = true, desc = "makes file executable" })
 
 -- Join lines
 keymap.set("n", "J", "mzJ`z")
@@ -320,6 +330,11 @@ keymap.set(
 )
 
 keymap.set("n", "vw", "viw", { noremap = true })
+keymap.set("n", "vv", "viw", { desc = "Select word visually" })
+keymap.set("n", "11", "ggzz", { desc = "Jump to start of file and center" })
+keymap.set("n", "22", "Gzz", { desc = "Jump to end of file" })
+keymap.set("n", "33", "*zz", { desc = "Search word under cursor and center" })
+keymap.set("n", "vv", "viw", { desc = "Select word visually" })
 
 -- Save / recall last cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {

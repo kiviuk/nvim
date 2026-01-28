@@ -1,6 +1,6 @@
 return {
   "rmagatti/auto-session",
-  event = "VimEnter",
+  event = "VeryLazy",
   config = function()
     -- Try reducing sessionoptions
     vim.o.sessionoptions = table.concat({
