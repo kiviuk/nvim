@@ -20,9 +20,9 @@ return {
     })
     -- Configure diagnostics
     vim.diagnostic.config({
-      virtual_text = true,
+      virtual_text = false,
       virtual_lines = false,
-      underline = true,
+      underline = false,
     })
     -- Set up language servers
     local lspconfig = require("lspconfig")
