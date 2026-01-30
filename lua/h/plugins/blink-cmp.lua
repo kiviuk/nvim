@@ -77,7 +77,7 @@ return {
                 auto_show_delay_ms = 100,
             },
             ghost_text = {
-                enabled = true
+                enabled = false
             },
         },
         snippets = { preset = "luasnip" },

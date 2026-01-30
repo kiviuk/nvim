@@ -1,0 +1,20 @@
+return {
+  "Exafunction/codeium.vim",
+  event = "InsertEnter",
+  config = function()
+    -- Disable default bindings
+    vim.g.codeium_disable_bindings = 1
+
+    -- Use Control+J to accept
+    vim.keymap.set('i', '<C-J>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+    
+    -- Alt+] for next suggestion
+    vim.keymap.set('i', '<M-]>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true, silent = true })
+    
+    -- Alt+[ for prev suggestion
+    vim.keymap.set('i', '<M-[>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+    
+    -- Clear suggestion
+    vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+  end
+}
