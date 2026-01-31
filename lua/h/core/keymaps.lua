@@ -388,3 +388,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, vim.tbl_extend("force", opts, { desc = "Open Diagnostic in floating window" }))
   end,
 })
+
+-- AI Chat keymaps (gp.nvim)
+-- Open new chat in vertical split
+vim.keymap.set("n", "<leader>ac", "<cmd>GpChatNew vsplit<CR>", { desc = "AI Chat (vsplit)" })
+-- Open chat finder
+vim.keymap.set("n", "<leader>af", "<cmd>GpChatFinder<CR>", { desc = "AI Chat Finder" })
+-- Toggle last chat
+vim.keymap.set("n", "<leader>at", "<cmd>GpChatToggle vsplit<CR>", { desc = "AI Toggle Chat" })
+-- Rewrite selected code
+vim.keymap.set({ "n", "v" }, "<leader>ar", "<cmd>GpRewrite<CR>", { desc = "AI Rewrite" })
+-- Explain selected code
+vim.keymap.set({ "n", "v" }, "<leader>ae", "<cmd>GpExplain<CR>", { desc = "AI Explain" })
