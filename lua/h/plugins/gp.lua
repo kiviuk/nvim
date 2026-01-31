@@ -46,6 +46,42 @@ return {
           model = { model = "deepseek/deepseek-r1", temperature = 0.8, top_p = 1 },
           system_prompt = require("gp.defaults").chat_system_prompt,
         },
+        -- Xiaomi MiMo v2 Flash (chat)
+        {
+          provider = "openrouter",
+          name = "ChatMimo",
+          chat = true,
+          command = false,
+          model = { model = "xiaomi/mimo-v2-flash", temperature = 0.8, top_p = 1 },
+          system_prompt = require("gp.defaults").chat_system_prompt,
+        },
+        -- NVIDIA Nemotron 3 Nano 30B (chat) - FREE
+        {
+          provider = "openrouter",
+          name = "ChatNvidia",
+          chat = true,
+          command = false,
+          model = { model = "nvidia/nemotron-3-nano-30b-a3b:free", temperature = 0.8, top_p = 1 },
+          system_prompt = require("gp.defaults").chat_system_prompt,
+        },
+        -- Z-AI GLM-4.7 (chat)
+        {
+          provider = "openrouter",
+          name = "ChatGLM",
+          chat = true,
+          command = false,
+          model = { model = "z-ai/glm-4.7", temperature = 0.8, top_p = 1 },
+          system_prompt = require("gp.defaults").chat_system_prompt,
+        },
+        -- DeepSeek V3.2 (chat)
+        {
+          provider = "openrouter",
+          name = "ChatDeepSeekV3",
+          chat = true,
+          command = false,
+          model = { model = "deepseek/deepseek-v3.2", temperature = 0.8, top_p = 1 },
+          system_prompt = require("gp.defaults").chat_system_prompt,
+        },
         -- Claude 3.5 Sonnet (code)
         {
           provider = "openrouter",
@@ -73,12 +109,48 @@ return {
           model = { model = "deepseek/deepseek-r1", temperature = 0.7, top_p = 1 },
           system_prompt = require("gp.defaults").code_system_prompt,
         },
+        -- Xiaomi MiMo v2 Flash (code)
+        {
+          provider = "openrouter",
+          name = "CodeMimo",
+          chat = false,
+          command = true,
+          model = { model = "xiaomi/mimo-v2-flash", temperature = 0.7, top_p = 1 },
+          system_prompt = require("gp.defaults").code_system_prompt,
+        },
+        -- NVIDIA Nemotron 3 Nano 30B (code) - FREE
+        {
+          provider = "openrouter",
+          name = "CodeNvidia",
+          chat = false,
+          command = true,
+          model = { model = "nvidia/nemotron-3-nano-30b-a3b:free", temperature = 0.7, top_p = 1 },
+          system_prompt = require("gp.defaults").code_system_prompt,
+        },
+        -- Z-AI GLM-4.7 (code)
+        {
+          provider = "openrouter",
+          name = "CodeGLM",
+          chat = false,
+          command = true,
+          model = { model = "z-ai/glm-4.7", temperature = 0.7, top_p = 1 },
+          system_prompt = require("gp.defaults").code_system_prompt,
+        },
+        -- DeepSeek V3.2 (code)
+        {
+          provider = "openrouter",
+          name = "CodeDeepSeekV3",
+          chat = false,
+          command = true,
+          model = { model = "deepseek/deepseek-v3.2", temperature = 0.7, top_p = 1 },
+          system_prompt = require("gp.defaults").code_system_prompt,
+        },
       },
-      
-      -- Default chat agent
-      default_chat_agent = "ChatClaude",
-      -- Default command agent
-      default_command_agent = "CodeClaude",
+
+      -- Default chat agent (NVIDIA - free model)
+      default_chat_agent = "ChatNvidia",
+      -- Default command agent (NVIDIA - free model)
+      default_command_agent = "CodeNvidia",
       
       -- UI settings
       toggle_target = "vsplit",

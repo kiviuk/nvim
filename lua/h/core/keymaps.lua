@@ -400,3 +400,5 @@ vim.keymap.set("n", "<leader>at", "<cmd>GpChatToggle vsplit<CR>", { desc = "AI T
 vim.keymap.set({ "n", "v" }, "<leader>ar", "<cmd>GpRewrite<CR>", { desc = "AI Rewrite" })
 -- Explain selected code
 vim.keymap.set({ "n", "v" }, "<leader>ae", "<cmd>GpExplain<CR>", { desc = "AI Explain" })
+-- Paste selection into AI chat
+vim.keymap.set("v", "<leader>ap", "<cmd>GpChatPaste<CR>", { desc = "AI Paste to chat" })
