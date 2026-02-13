@@ -8,8 +8,6 @@ return {
       "curdir",
       "folds",
       "tabpages",
-      "winsize",
-      "winpos",
       "localoptions",
     }, ",")
 
