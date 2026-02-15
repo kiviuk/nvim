@@ -1,6 +1,6 @@
 return {
   "robitx/gp.nvim",
-  event = "VeryLazy",
+  cmd = { "GpChat", "GpTask", "GpCmd" },
   config = function()
     local conf = {
       -- Read API key from environment variable

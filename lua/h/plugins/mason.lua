@@ -1,6 +1,7 @@
 return {
   "williamboman/mason.nvim",
-  cmd = "Mason",
+  event = { "BufReadPost" },
+  ft = { "python", "rust", "lua", "bash", "scala", "sbt", "java" },
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",

@@ -3,7 +3,6 @@ return {
   ft = { "scala", "sbt", "java" },
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "mfussenegger/nvim-dap",
   },
   config = function()
     local metals_config = require("metals").bare_config()
@@ -41,10 +40,6 @@ return {
     -- end
 
     metals_config.on_attach = function(client, bufnr)
-      -- This is needed for the nvim-dap integration to work correctly
-      require("metals").setup_dap()
-
-      -- Enable completion triggered by <c-x><c-o>
       vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
       local map = vim.keymap.set

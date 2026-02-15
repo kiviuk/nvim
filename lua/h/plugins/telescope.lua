@@ -1,6 +1,5 @@
 return {
   "nvim-telescope/telescope.nvim",
-  event = { "VeryLazy" },
   cmd = "Telescope",
   -- Define all keys here so lazy-loading actually works
   keys = {
