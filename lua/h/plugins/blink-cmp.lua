@@ -1,12 +1,12 @@
 -- https://github.com/JanneSalokoski/nvim-config/blob/main/lua/plugins/blink.cmp.lua
 return {
     "saghen/blink.cmp",
+    version = "1.*",
     dependencies = {
         "mikavilpas/blink-ripgrep.nvim",
         "Exafunction/windsurf.nvim",
         "windwp/nvim-autopairs",
     },
-    build = "cargo +nightly build --release",
     event = "InsertEnter",
     opts = {
         keymap = {
@@ -24,7 +24,7 @@ return {
                 end,
                 "fallback"
             },
-            ["<C-space>"] = { "show_documentation", "hide_documentation" },
+            ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
             ["<C-k>"] = { "scroll_documentation_up", "fallback" },
             ["<C-j>"] = { "scroll_documentation_down", "fallback" },
         },
@@ -82,8 +82,7 @@ return {
         },
         snippets = { preset = "luasnip" },
         sources = {
-            default = { "lsp" },
-            -- default = { "lsp", "path", "snippets", "ripgrep", "buffer", "codeium" },
+            default = { "lsp", "path", "snippets", "buffer" },
             providers = {
                 ripgrep = {
                     module = "blink-ripgrep",

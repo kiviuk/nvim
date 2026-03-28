@@ -7,9 +7,7 @@ return {
     "neovim/nvim-lspconfig",
   },
   config = function()
-    -- Set up Mason first
     require("mason").setup()
-    -- Set up Mason-lspconfig
     require("mason-lspconfig").setup({
       ensure_installed = {
         "lua_ls",
@@ -19,28 +17,35 @@ return {
         "bashls",
       }
     })
-    -- Configure diagnostics
     vim.diagnostic.config({
       virtual_text = false,
       virtual_lines = false,
       underline = false,
     })
-    -- Set up language servers
-    local lspconfig = require("lspconfig")
-    -- Configure servers
-    lspconfig.lua_ls.setup({
+
+    vim.lsp.config.lua_ls = {
       settings = {
         Lua = {
-          diagnostics = {
-            globals = { "vim" },
+          runtime = { version = "LuaJIT" },
+          diagnostics = { globals = { "vim" } },
+          workspace = {
+            library = vim.api.nvim_get_runtime_file("", true),
+            checkThirdParty = false,
           },
+          completion = { callSnippet = "Replace" },
         },
       },
-    })
-    lspconfig.bashls.setup({})
-    lspconfig.basedpyright.setup({})
-    lspconfig.ruff.setup({})
-    lspconfig.rust_analyzer.setup({})
+    }
+    vim.lsp.config.bashls = {}
+    vim.lsp.config.basedpyright = {}
+    vim.lsp.config.ruff = {}
+    vim.lsp.config.rust_analyzer = {}
+
+    vim.lsp.enable("lua_ls")
+    vim.lsp.enable("bashls")
+    vim.lsp.enable("basedpyright")
+    vim.lsp.enable("ruff")
+    vim.lsp.enable("rust_analyzer")
   end
 }
 
