@@ -1,84 +1,77 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPost", "BufNewFile" }, 
+  branch = "main",
+  lazy = false,
   build = ":TSUpdate",
-  -- dependencies = {
-  --   "windwp/nvim-ts-autotag",
-  -- },
   config = function()
-    local treesitter = require("nvim-treesitter.configs")
+    require("nvim-treesitter").setup({
+      install_dir = vim.fn.stdpath("data") .. "/site",
+    })
 
-    treesitter.setup({
-      -- A list of parser names, or "all"
-      ensure_installed = {
+    local parsers = {
+      "json",
+      "yaml",
+      "toml",
+      "python",
+      "clojure",
+      "requirements",
+      "markdown",
+      "bash",
+      "lua",
+      "vim",
+      "gitignore",
+      "java",
+      "scala",
+      "rust",
+    }
+
+    require("nvim-treesitter").install(parsers)
+
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = {
         "json",
-        -- "javascript",
-        -- "typescript",
-        -- "tsx",
         "yaml",
         "toml",
         "python",
         "clojure",
         "requirements",
-        -- "html",
-        -- "xml",
-        -- "css",
-        -- "prisma",
         "markdown",
-        -- "markdown_inline",
-        -- "svelte",
-        -- "graphql",
         "bash",
         "lua",
         "vim",
-        -- "dockerfile",
         "gitignore",
-        -- "query",
-        -- "vimdoc",
-        -- "c",
         "java",
         "scala",
         "rust",
       },
+      callback = function()
+        local buf = vim.api.nvim_get_current_buf()
+        local max_filesize = 1024 * 1024
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+          return
+        end
+        vim.treesitter.start(buf)
+      end,
+    })
 
-      -- Install parsers synchronously (only applied to `ensure_installed`)
-      sync_install = false,
-
-      -- Automatically install missing parsers when entering buffer
-      -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-      auto_install = true,
-
-      -- === THE FIX FOR LARGE FILES IS HERE ===
-      highlight = {
-        enable = true,
-        -- Set this to false if you want to use TSEnable highlight manually
-        -- on large files.
-        disable = function(lang, buf)
-          local max_filesize = 1024 * 1024 -- 1 MB
-          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-          if ok and stats and stats.size > max_filesize then
-            return true
-          end
-        end,
-
-        -- Or, if you REALLY want to parse large files, do this instead:
-        -- disable = false,
-        -- additional_vim_regex_highlighting = false,
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = {
+        "json",
+        "yaml",
+        "toml",
+        "python",
+        "clojure",
+        "bash",
+        "lua",
+        "vim",
+        "java",
+        "scala",
+        "rust",
       },
-      -- =======================================
-
-      indent = { enable = true },
-
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-y>",
-          node_incremental = "<C-y>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
-        },
-      },
-      additional_vim_regex_highlighting = false,
+      callback = function()
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
     })
   end,
 }
