@@ -1,7 +1,8 @@
 return {
   "williamboman/mason.nvim",
+  cmd = "Mason",
   event = { "BufReadPost" },
-  ft = { "python", "rust", "lua", "bash", "scala", "sbt", "java" },
+  ft = { "python", "rust", "lua", "bash", "scala", "sbt", "java", "go" },
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
@@ -15,6 +16,7 @@ return {
         "ruff",
         "rust_analyzer",
         "bashls",
+        "gopls",
       }
     })
     vim.diagnostic.config({
@@ -40,12 +42,14 @@ return {
     vim.lsp.config.basedpyright = {}
     vim.lsp.config.ruff = {}
     vim.lsp.config.rust_analyzer = {}
+    vim.lsp.config.gopls = {}
 
     vim.lsp.enable("lua_ls")
     vim.lsp.enable("bashls")
     vim.lsp.enable("basedpyright")
     vim.lsp.enable("ruff")
     vim.lsp.enable("rust_analyzer")
+    vim.lsp.enable("gopls")
   end
 }
 

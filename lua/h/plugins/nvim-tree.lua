@@ -64,5 +64,13 @@ return {
         ignore = false,
       },
     })
+
+    vim.api.nvim_create_autocmd("BufWinEnter", {
+      callback = function()
+        if vim.bo.filetype == "" and vim.bo.buftype == "" then
+          vim.cmd("filetype detect")
+        end
+      end,
+    })
   end,
 }

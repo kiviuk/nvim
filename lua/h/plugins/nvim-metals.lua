@@ -1,7 +1,18 @@
+local function strip_file_uri(pattern)
+  if type(pattern) == "string" and pattern:match("^file://") then
+    return pattern:gsub("^file://", "")
+  end
+  return pattern
+end
+
+local orig_to_lpeg = vim.glob.to_lpeg
+vim.glob.to_lpeg = function(pattern)
+  return orig_to_lpeg(strip_file_uri(pattern))
+end
+
 return {
   "scalameta/nvim-metals",
   ft = { "scala", "sbt", "java" },
-  -- event = "FileType",
   dependencies = {
     "nvim-lua/plenary.nvim",
   },

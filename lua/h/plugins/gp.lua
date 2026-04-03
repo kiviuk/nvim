@@ -13,7 +13,7 @@ return {
         -- Configure OpenRouter
         openrouter = {
           endpoint = "https://openrouter.ai/api/v1/chat/completions",
-          secret = { "cat", vim.fn.expand("~/Tokens/OR_TOKEN.txt") },
+          secret = { "cat", vim.fn.expand("$HOME/Tokens/OR_TOKEN.txt") },
         },
       },
 
@@ -184,9 +184,9 @@ return {
       },
 
       -- Default chat agent (NVIDIA - free model)
-      default_chat_agent = "ChatNvidiaSuper120B",
+      default_chat_agent = "ChatGLM5",
       -- Default command agent (NVIDIA - free model)
-      default_command_agent = "ChatNvidiaSuper120B",
+      default_command_agent = "CodeGLM5",
 
       -- UI settings
       toggle_target = "vsplit",
