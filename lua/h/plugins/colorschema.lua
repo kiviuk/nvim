@@ -33,6 +33,16 @@ return {
           colors.fg_float = fg
           colors.fg_gutter = fg_gutter
           colors.fg_sidebar = fg_dark
+          colors.spell_bad = "#ff5555"
+          colors.spell_cap = "#5fd7ff"
+          colors.spell_rare = "#5fd7ff"
+          colors.spell_local = "#ff79c6"
+        end,
+        on_highlights = function(highlights, colors)
+          highlights.SpellBad = { undercurl = true, fg = colors.spell_bad }
+          highlights.SpellCap = { undercurl = true, fg = colors.spell_cap }
+          highlights.SpellRare = { undercurl = true, fg = colors.spell_rare }
+          highlights.SpellLocal = { undercurl = true, fg = colors.spell_local }
         end,
       })
       -- load color scheme here

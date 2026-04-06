@@ -96,7 +96,8 @@ vim.keymap.set("n", "<leader>lx", function()
 end, { desc = "Toggle LSP diagnostics" })
 
 -- Toggle LSP Symbols
-vim.keymap.set('n', '<leader>ll', '<cmd>Telescope lsp_document_symbols<cr>', { desc = 'LSP Symbols (outline)' })
+vim.keymap.set('n', '<leader>ll', '<cmd>Telescope lsp_document_symbols<cr>', { desc = 'LSP Symbols (document)' })
+vim.keymap.set('n', '<leader>lL', '<cmd>Telescope lsp_workspace_symbols<cr>', { desc = 'LSP Symbols (workspace)' })
 vim.keymap.set('n', '<leader>lt', '<cmd>Telescope treesitter<cr>', { desc = 'Treesitter Symbols (outline)' })
 
 -- Only methods
@@ -402,3 +403,14 @@ vim.keymap.set({ "n", "v" }, "<leader>ar", "<cmd>GpRewrite<CR>", { desc = "AI Re
 vim.keymap.set({ "n", "v" }, "<leader>ae", ":'<,'>GpChatNew<CR>", { desc = "AI Explain" })
 -- Paste selection into AI chat
 vim.keymap.set("v", "<leader>ap", "<cmd>GpChatPaste<CR>", { desc = "AI Paste to chat" })
+
+-- Spell checking
+vim.keymap.set("n", "<leader>zn", "]s", { desc = "Next misspelled word" })
+vim.keymap.set("n", "<leader>zp", "[s", { desc = "Previous misspelled word" })
+vim.keymap.set("n", "<leader>za", "zg", { desc = "Add word to spell list" })
+
+-- Toggle spell checking
+vim.keymap.set("n", "<leader>zt", function()
+  vim.opt.spell = not vim.opt.spell:get()
+  vim.notify("Spell checking " .. (vim.opt.spell:get() and "enabled" or "disabled"), vim.log.levels.INFO)
+end, { desc = "Toggle spell checking" })

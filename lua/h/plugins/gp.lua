@@ -184,9 +184,9 @@ return {
       },
 
       -- Default chat agent (NVIDIA - free model)
-      default_chat_agent = "ChatGLM5",
+      default_chat_agent = "ChatDeepSeek",
       -- Default command agent (NVIDIA - free model)
-      default_command_agent = "CodeGLM5",
+      default_command_agent = "CodeDeepSeekV3",
 
       -- UI settings
       toggle_target = "vsplit",
